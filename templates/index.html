@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+</head>
+<body>
+
+    {% for movie in movies %}
+        {{ movie.title }}<br>
+        {{ movie.actors }}<br>
+        {{ movie.director }}<br>
+        {{ movie.genre }}<br>
+        {{ movie.poster }}<br>
+        {{ movie.rated }}<br>
+        {{ movie.released }}<br>
+        {{ movie.runtime }}<br>
+        {{ movie.year }}<br>
+    {% endfor %}
+    
+</body>
+</html>
