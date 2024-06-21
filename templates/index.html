@@ -23,15 +23,15 @@
     </div>
 
     {% for movie in movies %}
-        {{ movie.title }}<br>
-        {{ movie.actors }}<br>
-        {{ movie.director }}<br>
-        {{ movie.genre }}<br>
-        {{ movie.poster }}<br>
-        {{ movie.rated }}<br>
-        {{ movie.released }}<br>
-        {{ movie.runtime }}<br>
-        {{ movie.year }}<br>
+        {{ movie.Title }}<br>
+        {{ movie.Actors }}<br>
+        {{ movie.Director }}<br>
+        {{ movie.Genre }}<br>
+        <img src="{{ movie.Poster }}" alt="{{ movie.Title }} poster" width="200"><br>
+        {{ movie.Rated }}<br>
+        {{ movie.Released }}<br>
+        {{ movie.Runtime }}<br>
+        {{ movie.Year }}<br>
     {% endfor %}
 
 {% endblock %}
