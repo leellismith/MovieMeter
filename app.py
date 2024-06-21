@@ -22,6 +22,14 @@ mongo = PyMongo(app)
 def index():
     movies = mongo.db.movies.find()
     return render_template("index.html", movies=movies)
+    
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    query = request.form.get("query")
+    movies = list(mongo.db.movies.find({"$text": {"$search": query}}))
+    return render_template("index.html", movies=movies)
+    
 
 
 if __name__ == "__main__":

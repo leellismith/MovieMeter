@@ -1,7 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
 
-        
+
+    <h3 class="center-align">Search MovieMeter</h3>
+
+    <div class="row card-panel blue-grey lighten-5 card-style">
+        <form action="{{ url_for('search') }}" method="post" class="col s12">
+            <div class="row valign-wrapper center-align">
+                <div class="input-field col s12 m8">
+                    <i class="fas fa-search prefix blue-grey lighten-5"></i>
+                    <input type="text" name="query" id="query" minlength="2" class="validate" required>
+                    <label for="query">Search</label>
+                </div>
+                <div class="col s12 m4">
+                    <button type="submit" class="teal lighten-2 darken-1 btn text-shadow">
+                        <i class="fas fa-search left"></i> Search
+                    </button>
+                    <a href="{{ url_for('search') }}" class="red btn text-shadow">Reset</a>
+                </div>
+            </div>
+        </form>
+    </div>
+
     {% for movie in movies %}
         {{ movie.title }}<br>
         {{ movie.actors }}<br>
