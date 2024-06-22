@@ -29,28 +29,35 @@ def index():
 def search():
     query = request.form.get("query")
     movies = list(mongo.db.movies.find({"$text": {"$search": query}}))
+
     if not movies:
-        api_url = os.environ.get("OMDBAPI_HOST")
-        api_url += "apikey="
-        api_url += os.environ.get("OMDBAPI_KEY")
-        api_url += "&t="
-        api_url += query
+        api_url = os.environ.get("OMDBAPI_HOST") + "apikey=" + os.environ.get("OMDBAPI_KEY") + "&t=" + query
+        print(f"API URL: {api_url}")
         response = requests.get(api_url)
+
         if response.status_code == 200:
-            if 'Error' not in [response.json()]:
-                movie_data = response.json()
-                movies = {
-                    "Title": movie_data.get("Title"),
-                    "Actors": movie_data.get("Actors"),
-                    "Director": movie_data.get("Director"),
-                    "Genre": movie_data.get("Genre"),
-                    "Poster": movie_data.get("Poster"),
-                    "Rated": movie_data.get("Rated"),
-                    "Released": movie_data.get("Released"),
-                    "Runtime": movie_data.get("Runtime"),
-                    "Year": movie_data.get("Year")
-                }
-                mongo.db.movies.insert_one(movies)
+            movie_data = response.json()
+
+            if 'Error' not in movie_data:
+                check_movie = mongo.db.movies.find_one({"Title": movie_data.get("Title")})
+                
+                if not check_movie:
+                    movie_details = {
+                        "Title": movie_data.get("Title"),
+                        "Actors": movie_data.get("Actors"),
+                        "Director": movie_data.get("Director"),
+                        "Genre": movie_data.get("Genre"),
+                        "Poster": movie_data.get("Poster"),
+                        "Rated": movie_data.get("Rated"),
+                        "Released": movie_data.get("Released"),
+                        "Runtime": movie_data.get("Runtime"),
+                        "Year": movie_data.get("Year")
+                    }
+                    mongo.db.movies.insert_one(movie_details)
+                    movies = [movie_details]
+                else:
+                    movies = [check_movie]
+
     return render_template("index.html", movies=movies)
     
 
