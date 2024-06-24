@@ -1,3 +1,7 @@
 .card-style {
     border-radius: 30px;
 }
+
+.flashes h4 {
+    line-height: 2;
+}
