@@ -29,10 +29,13 @@ def index():
 @app.route("/search", methods=["GET", "POST"])
 def search():
     query = request.form.get("query")
-    movies = list(mongo.db.movies.find({"$text": {"$search": query}}))
+    movies = list(mongo.db.movies.find(
+        {"$text": {"$search": query}}))
 
     if not movies:
-        api_url = os.environ.get("OMDBAPI_HOST") + "apikey=" + os.environ.get("OMDBAPI_KEY") + "&t=" + query
+        api_url = os.environ.get(
+            "OMDBAPI_HOST") + "apikey=" + os.environ.get(
+                "OMDBAPI_KEY") + "&t=" + query
         print(f"API URL: {api_url}")
         response = requests.get(api_url)
 
@@ -40,7 +43,8 @@ def search():
             movie_data = response.json()
 
             if 'Error' not in movie_data:
-                check_movie = mongo.db.movies.find_one({"Title": movie_data.get("Title")})
+                check_movie = mongo.db.movies.find_one(
+                    {"Title": movie_data.get("Title")})
                 
                 if not check_movie:
                     movie_details = {
@@ -81,7 +85,7 @@ def signup():
 
         session["user"] = request.form.get("username").lower()
         flash("Registration Successful!")
-
+        return redirect(url_for("profile", username=session["user"]))
     return render_template("signup.html")
 
 
@@ -97,7 +101,10 @@ def login():
             if check_password_hash(
                 existing_user["password"], request.form.get("password")):
                     session["user"] = request.form.get("username").lower()
-                    flash("Welcome, {}".format(request.form.get("username")))
+                    flash("Welcome, {}".format(
+                        request.form.get("username")))
+                    return redirect(
+                        url_for("profile", username=session["user"]))
             else:
                 # invalid password match
                 flash("Incorrect Username and/or Password")
@@ -108,6 +115,36 @@ def login():
             flash("Incorrect Username and/or Password")
             return redirect(url_for("login"))
     return render_template("login.html")
+
+
+@app.route("/profile/<username>", methods=["GET", "POST"])
+def profile(username):
+    # Get the session user from session
+    sess_user = session.get("user")
+
+    if sess_user:
+        # Get the session user from DB
+        user = mongo.db.users.find_one({"username": sess_user})
+        
+        if user:
+            # Check if the session user matches the username in the URL
+            if user["username"] == username:
+                return render_template("profile.html", username=user["username"])
+            else:
+                flash("You are only able to view your own profile!")
+                return redirect(url_for("profile", username=user["username"]))
+        else:
+            flash("Can't find user in the database.")
+            return redirect(url_for("login"))
+    else:
+        return redirect(url_for("login"))
+
+
+@app.route("/logout")
+def logout():
+    flash("You have been logged out")
+    session.pop("user")
+    return redirect(url_for("login"))
 
 
 if __name__ == "__main__":
