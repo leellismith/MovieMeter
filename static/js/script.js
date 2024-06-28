@@ -1,3 +1,4 @@
-$(document).ready(function(){
-    $('.sidenav').sidenav({edge: "right"});
-  });
+jQuery(document).ready(function($) {
+  // Now you can safely use $ within this function
+  $('.sidenav').sidenav();
+});

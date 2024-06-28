@@ -2,28 +2,33 @@
 {% block content %}
 
 
-    <h3 class="center-align">Search MovieMeter</h3>
+    <h3 class="text-center">Search MovieMeter</h3>
 
-    <div class="row card-panel blue-grey lighten-5 card-style">
-        <form action="{{ url_for('search') }}" method="post" class="col s12">
-            <div class="row valign-wrapper center-align">
-                <div class="input-field col s12 m8">
-                    <i class="fas fa-search prefix blue-grey lighten-5"></i>
-                    <input type="text" name="query" id="query" minlength="2" class="validate" required>
-                    <label for="query">Search</label>
+    <div class="row card card-body bg-light card-style">
+        <form action="{{ url_for('search') }}" method="post" class="col-12">
+            <div class="row align-items-center justify-content-center text-center">
+                <div class="form-group col-12 col-md-8">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-light">
+                                <i class="fas fa-search"></i>
+                            </span>
+                        </div>
+                        <input type="text" name="query" id="query" minlength="2" class="form-control" required placeholder="Search">
+                    </div>
                 </div>
-                <div class="col s12 m4">
-                    <button type="submit" class="teal lighten-2 darken-1 btn text-shadow">
-                        <i class="fas fa-search left"></i> Search
+                <div class="col-12 col-md-4">
+                    <button type="submit" class="btn btn-success text-shadow">
+                        <i class="fas fa-search"></i> Search
                     </button>
-                    <a href="{{ url_for('search') }}" class="red btn text-shadow">Reset</a>
+                    <a href="{{ url_for('search') }}" class="btn btn-danger text-shadow">Reset</a>
                 </div>
             </div>
         </form>
     </div>
 
     {% for movie in movies %}
-        <li class="center-align">
+        <li class="align-items-center justify-content-center text-center">
             <h3>Title: {{ movie.Title }}</h3><br>
             <img src="{{ movie.Poster }}" alt="{{ movie.Title }} poster" width="200"><br>
             <strong>Actors: </strong>{{ movie.Actors }}<br>

@@ -5,3 +5,12 @@
 .flashes h4 {
     line-height: 2;
 }
+
+/*------------ Media*/
+
+@media only screen and (min-width: 992px) {
+    .navbar-expand-lg .offcanvas .offcanvas-body {
+        justify-content: flex-end;
+    }
+    
+}
