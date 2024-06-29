@@ -2,7 +2,7 @@ import os
 import requests
 from flask import (
     Flask, flash, render_template,
-    redirect, request, session, url_for)
+    redirect, request, jsonify, session, url_for)
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -29,41 +29,72 @@ def index():
 @app.route("/search", methods=["GET", "POST"])
 def search():
     query = request.form.get("query")
-    movies = list(mongo.db.movies.find(
-        {"$text": {"$search": query}}))
-
+    movies = search_movies_in_db(query)
+    
     if not movies:
-        api_url = os.environ.get(
-            "OMDBAPI_HOST") + "apikey=" + os.environ.get(
-                "OMDBAPI_KEY") + "&t=" + query
-        print(f"API URL: {api_url}")
-        response = requests.get(api_url)
-
-        if response.status_code == 200:
-            movie_data = response.json()
-
-            if 'Error' not in movie_data:
-                check_movie = mongo.db.movies.find_one(
-                    {"Title": movie_data.get("Title")})
-                
-                if not check_movie:
-                    movie_details = {
-                        "Title": movie_data.get("Title"),
-                        "Actors": movie_data.get("Actors"),
-                        "Director": movie_data.get("Director"),
-                        "Genre": movie_data.get("Genre"),
-                        "Poster": movie_data.get("Poster"),
-                        "Rated": movie_data.get("Rated"),
-                        "Released": movie_data.get("Released"),
-                        "Runtime": movie_data.get("Runtime"),
-                        "Year": movie_data.get("Year")
-                    }
-                    mongo.db.movies.insert_one(movie_details)
-                    movies = [movie_details]
-                else:
-                    movies = [check_movie]
-
+        movies = search_movies_in_api(query)
+        if movies:
+            save_movies_to_db(movies)
+        else:
+            return render_template("index.html", error="No movies found.")
+    
     return render_template("index.html", movies=movies)
+
+@app.route("/autocomplete", methods=["GET"])
+def autocomplete():
+    query = request.args.get("query")
+    movies = search_movies_in_db(query)
+    
+    if not movies:
+        movies = search_movies_in_api(query)
+        if movies:
+            save_movies_to_db(movies)
+    
+    return jsonify([movie["Title"] for movie in movies])
+
+def search_movies_in_db(query):
+    return list(mongo.db.movies.find({"$text": {"$search": query}}))
+
+def search_movies_in_api(query):
+    api_url = os.environ.get("OMDBAPI_HOST") + "apikey=" + os.environ.get("OMDBAPI_KEY") + "&s=" + query
+    response = requests.get(api_url)
+    
+    if response.status_code == 200:
+        search_results = response.json()
+        if 'Search' in search_results:
+            movies = []
+            for movie in search_results['Search']:
+                movie_details = get_movie_details(movie['imdbID'])
+                if movie_details:
+                    movies.append(movie_details)
+            return movies
+    return None
+
+def get_movie_details(imdb_id):
+    api_url = os.environ.get("OMDBAPI_HOST") + "apikey=" + os.environ.get("OMDBAPI_KEY") + "&i=" + imdb_id
+    response = requests.get(api_url)
+    
+    if response.status_code == 200:
+        movie_data = response.json()
+        if 'Error' not in movie_data:
+            return {
+                "Title": movie_data.get("Title"),
+                "Actors": movie_data.get("Actors"),
+                "Director": movie_data.get("Director"),
+                "Genre": movie_data.get("Genre"),
+                "Poster": movie_data.get("Poster"),
+                "Rated": movie_data.get("Rated"),
+                "Released": movie_data.get("Released"),
+                "Runtime": movie_data.get("Runtime"),
+                "Year": movie_data.get("Year"),
+                "imdbID": movie_data.get("imdbID")
+            }
+    return None
+
+def save_movies_to_db(movies):
+    for movie in movies:
+        if not mongo.db.movies.find_one({"imdbID": movie.get("imdbID")}):
+            mongo.db.movies.insert_one(movie)
     
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -145,6 +176,11 @@ def logout():
     flash("You have been logged out")
     session.pop("user")
     return redirect(url_for("login"))
+
+
+@app.route("/reviews")
+def reviews():
+    return render_template("reviews.html")
 
 
 if __name__ == "__main__":

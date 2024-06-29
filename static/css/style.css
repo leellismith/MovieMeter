@@ -6,6 +6,24 @@
     line-height: 2;
 }
 
+.autocomplete-suggestions {
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: #fff;
+    z-index: 1000;
+    width: 100%;
+}
+.autocomplete-suggestion {
+    padding: 8px;
+    cursor: pointer;
+}
+.autocomplete-suggestion:hover {
+    background-color: #ddd;
+}
+
+
 /*------------ Media*/
 
 @media only screen and (min-width: 992px) {
