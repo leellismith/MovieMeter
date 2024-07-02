@@ -14,13 +14,14 @@
     background-color: #fff;
     z-index: 1000;
     width: 100%;
+    top: 3vh;
 }
 .autocomplete-suggestion {
-    padding: 8px;
+    padding: 10px;
     cursor: pointer;
 }
 .autocomplete-suggestion:hover {
-    background-color: #ddd;
+    background-color: #ffffff;
 }
 
 

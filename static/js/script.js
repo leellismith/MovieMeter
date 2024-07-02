@@ -1,4 +1,3 @@
-// Vanilla JavaScript for autocomplete
 document.getElementById('query').addEventListener('input', function() {
   let query = this.value;
   if (query.length < 2) {

@@ -56,7 +56,9 @@ def search_movies_in_db(query):
     return list(mongo.db.movies.find({"$text": {"$search": query}}))
 
 def search_movies_in_api(query):
-    api_url = os.environ.get("OMDBAPI_HOST") + "apikey=" + os.environ.get("OMDBAPI_KEY") + "&s=" + query
+    api_url = os.environ.get(
+        "OMDBAPI_HOST") + "apikey=" + os.environ.get(
+            "OMDBAPI_KEY") + "&s=" + query
     response = requests.get(api_url)
     
     if response.status_code == 200:
@@ -71,7 +73,9 @@ def search_movies_in_api(query):
     return None
 
 def get_movie_details(imdb_id):
-    api_url = os.environ.get("OMDBAPI_HOST") + "apikey=" + os.environ.get("OMDBAPI_KEY") + "&i=" + imdb_id
+    api_url = os.environ.get(
+        "OMDBAPI_HOST") + "apikey=" + os.environ.get(
+            "OMDBAPI_KEY") + "&i=" + imdb_id
     response = requests.get(api_url)
     
     if response.status_code == 200:
@@ -176,6 +180,11 @@ def logout():
     flash("You have been logged out")
     session.pop("user")
     return redirect(url_for("login"))
+
+
+@app.route("/add_review")
+def add_review():
+    return render_template("add_review.html")
 
 
 @app.route("/reviews")
