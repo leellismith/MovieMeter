@@ -1,5 +1,5 @@
 document.getElementById('query').addEventListener('input', function() {
-  let query = this.value;
+  let query = this.value.trim();
   if (query.length < 2) {
       document.getElementById('autocomplete-list').innerHTML = '';
       return;

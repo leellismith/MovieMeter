@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
+    <h2>Add your Review</h2>
 
     <div class="card text-bg-dark mx-auto p-2 m-2">
         <div class="card-body">
@@ -8,11 +9,22 @@
                 <div class="row">
                     <div class="col">
                     </div>
-                    <div class="col-6">
-                        2 of 3 (wider)
-                    </div>
-                    <div class="col">
-                    </div>
+                    <form method="POST" action="/add_review">
+                        <div class="col-6">
+                            <label for="query" class="form-label">Search for a film to review:</label>
+                            <input class="form-control" list="datalistOptions" id="query" name="query"
+                                placeholder="Type to search..." type="text" required>
+                            <div id="autocomplete-list"></div>
+                        </div>
+                        <div class="col">
+                        </div>
+                        <div class="form-floating">
+                            <textarea class="form-control" placeholder="Leave a review here" id="review" name="review"
+                                style="height: 100px" maxlength="200" required></textarea>
+                            <label for="review">Review</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-3">Save Review</button>
+                    </form>
                 </div>
             </div>
         </div>

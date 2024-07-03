@@ -40,6 +40,7 @@ def search():
     
     return render_template("index.html", movies=movies)
 
+
 @app.route("/autocomplete", methods=["GET"])
 def autocomplete():
     query = request.args.get("query")
@@ -182,9 +183,28 @@ def logout():
     return redirect(url_for("login"))
 
 
-@app.route("/add_review")
+@app.route("/add_review", methods=["GET", "POST"])
 def add_review():
-    return render_template("add_review.html")
+
+    movie_title = request.form.get("query")
+    review_text = request.form.get("review")
+
+    if not movie_title or not review_text:
+        return render_template("add_review.html")
+
+    if len(review_text) > 200:
+        flash("A review must be 200 characters or less")
+        return render_template("add_review.html")
+
+    review = {
+        "movie": movie_title,
+        "review": review_text
+    }
+
+    mongo.db.reviews.insert_one(review)
+    return redirect(url_for("reviews")) # Sends user to reviews page(might change)
+
+    # return render_template("add_review.html")
 
 
 @app.route("/reviews")
