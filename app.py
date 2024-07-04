@@ -1,5 +1,6 @@
 import os
 import requests
+import datetime
 from flask import (
     Flask, flash, render_template,
     redirect, request, jsonify, session, url_for)
@@ -54,7 +55,8 @@ def autocomplete():
     return jsonify([movie["Title"] for movie in movies])
 
 def search_movies_in_db(query):
-    return list(mongo.db.movies.find({"$text": {"$search": query}}))
+    movies = list(mongo.db.movies.find({"$text": {"$search": query}}))
+    return [{"Title": movie["Title"], "Poster": movie.get("Poster")} for movie in movies]
 
 def search_movies_in_api(query):
     api_url = os.environ.get(
@@ -185,31 +187,52 @@ def logout():
 
 @app.route("/add_review", methods=["GET", "POST"])
 def add_review():
+    if request.method == "POST":
+        movie_title = request.form.get("query")
+        review_text = request.form.get("review")
+        
+        if not movie_title or not review_text:
+            return render_template("add_review.html")
 
-    movie_title = request.form.get("query")
-    review_text = request.form.get("review")
+        if len(review_text) > 200:
+            flash("A review must be 200 characters or less")
+            return render_template("add_review.html")
 
-    if not movie_title or not review_text:
-        return render_template("add_review.html")
+        movie_details = None
+        movies_db = search_movies_in_db(movie_title)
+        if movies_db:
+            movie_details = movies_db[0]  # Takes the first result from DB
 
-    if len(review_text) > 200:
-        flash("A review must be 200 characters or less")
-        return render_template("add_review.html")
+        if not movie_details:
+            movies_api = search_movies_in_api(movie_title)
+            if movies_api:
+                movie_details = movies_api[0]  # Takes the first result from API
+                save_movies_to_db(movies_api)  # Saves fetched movies to DB if not already present
 
-    review = {
-        "movie": movie_title,
-        "review": review_text
-    }
+        if not movie_details:
+            flash(f"Movie '{movie_title}' not found.")
+            return render_template("add_review.html")
 
-    mongo.db.reviews.insert_one(review)
-    return redirect(url_for("reviews")) # Sends user to reviews page(might change)
+        review = {
+            "movie": movie_title,
+            "review": review_text,
+            "image_url": movie_details.get("Poster"),
+            "user": session["user"],
+            "timestamp": datetime.datetime.utcnow()
+        }
 
-    # return render_template("add_review.html")
+        # Insert review into MongoDB
+        mongo.db.reviews.insert_one(review)
+        flash("Review added successfully.")
+        return redirect(url_for("reviews"))  # Redirect to reviews page
+
+    return render_template("add_review.html")
 
 
 @app.route("/reviews")
 def reviews():
-    return render_template("reviews.html")
+    reviews = list(mongo.db.reviews.find())
+    return render_template("reviews.html", reviews=reviews)
 
 
 if __name__ == "__main__":
