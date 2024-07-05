@@ -30,6 +30,7 @@ def index():
 @app.route("/search", methods=["GET", "POST"])
 def search():
     query = request.form.get("query")
+    redirect_to = request.form.get("redirect_to", "index")
     movies = search_movies_in_db(query)
     
     if not movies:
@@ -37,7 +38,15 @@ def search():
         if movies:
             save_movies_to_db(movies)
         else:
+            if redirect_to == "add_review":
+                flash("No movies found.")
+                return render_template("add_review.html", movie_title=query)
             return render_template("index.html", error="No movies found.")
+        
+    if redirect_to == "add_review":
+        poster_url = movies[0].get("Poster") if movies else None
+        return render_template(
+            "add_review.html", movie_title=query, poster_url=poster_url)
     
     return render_template("index.html", movies=movies)
 
@@ -187,16 +196,25 @@ def logout():
 
 @app.route("/add_review", methods=["GET", "POST"])
 def add_review():
+    movie_title = ""
+    review_text = ""
+    poster_url = ""
+
     if request.method == "POST":
         movie_title = request.form.get("query")
         review_text = request.form.get("review")
+        poster_url = request.form.get("poster_url")
         
         if not movie_title or not review_text:
-            return render_template("add_review.html")
+            return render_template(
+                "add_review.html", movie_title=movie_title, 
+                review_text=review_text, poster_url=poster_url)
 
         if len(review_text) > 200:
             flash("A review must be 200 characters or less")
-            return render_template("add_review.html")
+            return render_template(
+                "add_review.html", movie_title=movie_title, 
+                review_text=review_text, poster_url=poster_url)
 
         movie_details = None
         movies_db = search_movies_in_db(movie_title)
@@ -211,12 +229,14 @@ def add_review():
 
         if not movie_details:
             flash(f"Movie '{movie_title}' not found.")
-            return render_template("add_review.html")
+            return render_template(
+                "add_review.html", movie_title=movie_title, review_text=review_text,
+                    poster_url=poster_url)
 
         review = {
             "movie": movie_title,
             "review": review_text,
-            "image_url": movie_details.get("Poster"),
+            "image_url": poster_url,
             "user": session["user"],
             "timestamp": datetime.datetime.utcnow()
         }
@@ -226,7 +246,7 @@ def add_review():
         flash("Review added successfully.")
         return redirect(url_for("reviews"))  # Redirect to reviews page
 
-    return render_template("add_review.html")
+    return render_template("add_review.html", movie_title=movie_title, review_text=review_text, poster_url=poster_url)
 
 
 @app.route("/reviews")

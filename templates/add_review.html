@@ -9,21 +9,31 @@
                 <div class="row">
                     <div class="col">
                     </div>
-                    <form method="POST" action="/add_review">
+                    <form method="POST" action="/search">
                         <div class="col-6">
                             <label for="query" class="form-label">Search for a film to review:</label>
                             <input class="form-control" list="datalistOptions" id="query" name="query"
-                                placeholder="Type to search..." type="text" required>
-                            <div id="autocomplete-list"></div>
+                                placeholder="Type to search..." type="text" required value="{{ movie_title }}">
+                            <div id="autocomplete-list" class="autocomplete-suggestions"></div>
+                            <input type="hidden" name="redirect_to" value="add_review">
+                            <button type="submit" class="btn btn-secondary mb-3">Search</button>
                         </div>
+                    </form>
+                    <form method="POST" action="/add_review">
                         <div class="col">
+                            {% if poster_url %}
+                                <img src="{{ poster_url }}" alt="Film Poster"
+                                    style="width: 200px; height: auto; margin-top: 10px;">
+                                <input type="hidden" id="poster_url" name="poster_url" value="{{ poster_url }}">
+                            {% endif %}
+                            <input type="hidden" id="query" name="query" value="{{ movie_title }}">
+                            <div class="form-floating">
+                                <textarea class="form-control" placeholder="Leave a review here" id="review"
+                                    name="review" style="height: 100px" maxlength="200" required></textarea>
+                                <label for="review">Review</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-3">Save Review</button>
                         </div>
-                        <div class="form-floating">
-                            <textarea class="form-control" placeholder="Leave a review here" id="review" name="review"
-                                style="height: 100px" maxlength="200" required></textarea>
-                            <label for="review">Review</label>
-                        </div>
-                        <button type="submit" class="btn btn-primary mb-3">Save Review</button>
                     </form>
                 </div>
             </div>
