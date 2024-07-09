@@ -16,11 +16,11 @@ img.img-fluid.rounded-start {
 }
 
 .autocomplete-suggestions {
-    border: 1px solid #ccc;
+    border: 1px solid #dee2e6;
     max-height: 200px;
     overflow-y: auto;
     position: absolute;
-    background-color: #fff;
+    background-color: #f8f9fa;
     z-index: 1000;
     width: 100%;
     top: 100%;
@@ -29,10 +29,12 @@ img.img-fluid.rounded-start {
 
 .autocomplete-suggestion {
     padding: 8px;
+    color: #495057;
     cursor: pointer;
 }
 .autocomplete-suggestion:hover {
-    background-color: #ffffff;
+    background-color: #e9ecef;
+    color: #212529;
 }
 
 
