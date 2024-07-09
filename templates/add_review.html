@@ -6,33 +6,46 @@
     <div class="card text-bg-dark mx-auto p-2 m-2">
         <div class="card-body">
             <div class="container text-center position-relative">
-                <div class="row">
-                    <div class="col"></div>
-                    <form method="POST" action="/search">
-                        <div class="col-6 position-relative">
-                            <label for="query" class="form-label">Search for a film to review:</label>
-                            <input class="form-control" list="datalistOptions" id="query" name="query"
-                                placeholder="Type to search..." type="text" required autocomplete="off">
-                            <input type="hidden" name="redirect_to" value="add_review">
-                            <button type="submit" class="btn btn-secondary mb-3">Search</button>
-                            <div id="autocomplete-list" class="autocomplete-suggestions"></div>
-                        </div>
-                    </form>
-                    <div class="col">
-                        <form method="POST" action="/add_review">
-                            {% if poster_url %}
-                            <img src="{{ poster_url }}" alt="Film Poster"
-                                style="width: 200px; height: auto; margin-top: 10px;">
-                            <input type="hidden" id="poster_url" name="poster_url" value="{{ poster_url }}">
-                            {% endif %}
-                            <input type="hidden" id="query" name="query" value="{{ movie_title }}">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Leave a review here" id="review"
-                                    name="review" style="height: 100px" maxlength="200" required></textarea>
-                                <label for="review">Review</label>
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <form method="POST" action="/search" class="mb-3">
+                            <div class="col-6 position-relative">
+                                <label for="query" class="form-label">Search for a film to review:</label>
+                                <div class="input-group">
+                                    <input class="form-control" list="datalistOptions" id="query" name="query"
+                                        placeholder="Type to search..." type="text" required autocomplete="off">
+                                    <input type="hidden" name="redirect_to" value="add_review">
+                                    <div>
+                                        <button type="submit" class="btn btn-secondary">Search</button>
+                                    </div>
+                                </div>
+                                <div id="autocomplete-list" class="autocomplete-suggestions"></div>
                             </div>
-                            <button type="submit" class="btn btn-primary mb-3">Save Review</button>
                         </form>
+                        {% if movie_title %}
+                        <div class="card text-bg-secondary p-3 mb-3">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ movie_title }}</h5>
+                                {% if poster_url %}
+                                <div class="text-center mb-3">
+                                    <img src="{{ poster_url }}" alt="Film Poster" class="img-fluid"
+                                        style="max-width: 200px;">
+                                    <input type="hidden" id="poster_url" name="poster_url" value="{{ poster_url }}">
+                                </div>
+                                {% endif %}
+                                <form method="POST" action="/add_review">
+                                    <input type="hidden" id="query" name="query" value="{{ movie_title }}">
+                                    <input type="hidden" id="poster_url" name="poster_url" value="{{ poster_url }}">
+                                    <div class="form-floating mb-3">
+                                        <textarea class="form-control" placeholder="Leave a review here" id="review"
+                                            name="review" style="height: 150px" maxlength="200" required></textarea>
+                                        <label for="review">Review</label>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save Review</button>
+                                </form>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

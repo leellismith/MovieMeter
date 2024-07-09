@@ -33,8 +33,17 @@ def index():
 @app.route("/search", methods=["GET", "POST"])
 def search():
     query = request.form.get("query")
+    if not query:
+        flash(f"No search provided.")
+        return render_template("index.html")
+
     redirect_to = request.form.get("redirect_to", "index")
     movies = search_movies_in_db(query)
+
+    if not movies:
+        movies = search_movies_in_api(query)
+        if movies:
+            save_movies_to_db(movies)
     
     if not movies:
         if redirect_to == "add_review":
@@ -114,35 +123,67 @@ def logout():
 
 @app.route("/add_review", methods=["GET", "POST"])
 def add_review():
-    movie_title = request.form.get("query")
-    review_text = request.form.get("review")
-    poster_url = request.form.get("poster_url")
+    movie_title = ""
+    review_text = ""
+    poster_url = ""
 
-    if request.method == "POST" and movie_title and review_text:
+    if request.method == "POST":
+        movie_title = request.form.get("query")
+        review_text = request.form.get("review")
+        poster_url = request.form.get("poster_url")
+
+        if not movie_title or not review_text:
+            flash("Movie title and review text are required.")
+            return render_template(
+                "add_review.html", movie_title=movie_title, 
+                review_text=review_text, poster_url=poster_url)
+
         if len(review_text) > 200:
-            flash("A review must be 200 characters or less")
-        else:
-            movie_details = search_movie_details(movie_title)
-            if movie_details:
-                review = {
-                    "movie": movie_title,
-                    "review": review_text,
-                    "image_url": poster_url,
-                    "user": session["user"],
-                    "timestamp": datetime.datetime.utcnow()
-                }
-                mongo.db.reviews.insert_one(review)
-                flash("Review added successfully.")
-                return redirect(url_for("reviews"))
-            flash(f"Movie '{movie_title}' not found.")
+            flash("A review must be 200 characters or less.")
+            return render_template(
+                "add_review.html", movie_title=movie_title, 
+                review_text=review_text, poster_url=poster_url)
 
-    return render_template("add_review.html", movie_title=movie_title, review_text=review_text, poster_url=poster_url)
+        movie_details = get_movie_details(movie_title)
+
+        if not movie_details:
+            movie_details = search_movies_in_api(movie_title)
+            if movie_details:
+                save_movies_to_db(movie_details)
+
+        if not movie_details:
+            flash(f"Movie '{movie_title}' not found.")
+            return render_template(
+                "add_review.html", movie_title=movie_title, 
+                review_text=review_text, poster_url=poster_url)
+
+        review = {
+            "movie": movie_title,
+            "review": review_text,
+            "image_url": poster_url,
+            "user": session.get("user"),
+            "timestamp": datetime.datetime.utcnow()
+        }
+
+        mongo.db.reviews.insert_one(review)
+        flash("Review added successfully.")
+        return redirect(url_for("reviews"))
+
+    return render_template(
+        "add_review.html", movie_title=movie_title,
+        review_text=review_text, poster_url=poster_url)
 
 
 @app.route("/reviews")
 def reviews():
     reviews = list(mongo.db.reviews.find())
     return render_template("reviews.html", reviews=reviews)
+
+
+@app.route("/manage_reviews/<review_id>", methods=["GET", "POST"])
+def manage_reviews(review_id):
+    review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
+    return render_template("manage_reviews", review=review)
 
 
 # Help Functions
