@@ -15,6 +15,10 @@ img.img-fluid.rounded-start {
     width: 100%;
 }
 
+.card-spacing {
+    margin: 0.5rem 0.5rem 0.5rem 0.5rem !important;
+}
+
 .autocomplete-suggestions {
     border: 1px solid #dee2e6;
     max-height: 200px;

@@ -229,7 +229,7 @@ def search_movies_in_db(query):
 def search_movies_in_api(query):
     api_url = os.environ.get(
         "OMDBAPI_HOST") + "apikey=" + os.environ.get(
-            "OMDBAPI_KEY") + "&s=" + query
+            "OMDBAPI_KEY") + "&s=" + query + "&type=movie"
     response = requests.get(api_url)
     if response.status_code == 200:
         search_results = response.json()
