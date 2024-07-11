@@ -180,10 +180,36 @@ def reviews():
     return render_template("reviews.html", reviews=reviews)
 
 
+@app.route("/manage_reviews", methods=["GET"])
+def manage_reviews():
+    user = session.get("user")
+    reviews = list(mongo.db.reviews.find({"user": user}))
+    return render_template("manage_reviews.html", reviews=reviews)
+
+
 @app.route("/manage_reviews/<review_id>", methods=["GET", "POST"])
-def manage_reviews(review_id):
+def edit_review(review_id):
     review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
-    return render_template("manage_reviews", review=review)
+
+    if request.method == "POST":
+        edit_review = request.form.get("review")
+
+        if not edit_review:
+            flash("A review field can't be empty.")
+            return render_template("manage_reviews.html", review=review)
+
+        if len(edit_review) > 200:
+            flash("A review must be 200 characters or less.")
+            return render_template("manage_reviews.html", review=review)
+
+        mongo.db.reviews.update_one(
+            {"_id": ObjectId(review_id)},
+            {"$set": {"review": edit_review, "timestamp": datetime.datetime.utcnow()}}
+        )
+        flash("You have updated your review.")
+        return redirect(url_for("manage_reviews"))
+
+    return render_template("manage_reviews.html",  reviews=[], review=review)
 
 
 # Help Functions

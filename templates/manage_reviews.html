@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<div class="container">
+    <div class="row justify-content-center">
+        <h1>Manage Your Reviews</h1>
+    </div>
+    <div class="row justify-content-center">
+        {% for review in reviews %}
+        <div class="card mb-3" style="max-width: 540px;">
+            <div class="row g-0">
+                <div class="col-md-4">
+                    <img src="{{ review.image_url }}" class="img-fluid rounded-start" alt="{{ review.movie }}">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ review.movie }}</h5>
+                        <p class="card-text">{{ review.review }}</p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                Posted by {{ review.user }} | {{ review.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+                            </small>
+                        </p>
+                        <a class="btn btn-primary" href="{{ url_for('edit_review', review_id=review._id) }}">Update Review</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+    <!-- Edit a specific review -->
+    {% if review %}
+    <div class="mt-4">
+        <h2>Edit Review</h2>
+        <form method="POST" action="{{ url_for('edit_review', review_id=review._id) }}">
+            <div class="mb-3">
+                <label for="review" class="form-label">Review Text</label>
+                <textarea class="form-control" id="review" name="review" rows="3">{{ review.review }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Update Review</button>
+        </form>
+    </div>
+    {% endif %}
+</div>
+
+
+
+
+{% endblock %}
