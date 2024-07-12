@@ -212,6 +212,14 @@ def edit_review(review_id):
     return render_template("manage_reviews.html",  reviews=[], review=review)
 
 
+@app.route("/delete_review/<review_id>")
+def delete_review(review_id):
+    mongo.db.reviews.delete_one({"_id": ObjectId(review_id)})
+    flash("Your review has been deleted!")
+    return redirect(url_for("manage_reviews"))
+
+
+
 # Help Functions
 def search_movies(query):
     movies = search_movies_in_db(query)
