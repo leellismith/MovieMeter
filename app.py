@@ -38,7 +38,7 @@ def search():
         return render_template("index.html")
 
     redirect_to = request.form.get("redirect_to", "index")
-    movies = search_movies_in_db(query)
+    movies = search_movies(query)
 
     if not movies:
         movies = search_movies_in_api(query)
@@ -59,7 +59,7 @@ def search():
     return render_template("index.html", movies=movies)
 
 
-@app.route("/autocomplete", methods=["GET"])
+@app.route("/autocomplete")
 def autocomplete():
     query = request.args.get("query")
     movies = search_movies(query)    
@@ -231,6 +231,10 @@ def search_movies(query):
 
 
 def search_movies_in_db(query):
+    exact_match = mongo.db.movies.find_one({"Title": query})
+    if exact_match:
+        return [exact_match]
+    # Fallback to text search
     return list(mongo.db.movies.find({"$text": {"$search": query}}))
 
 
