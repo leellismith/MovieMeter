@@ -1,3 +1,46 @@
+body {
+    background-color: #000000;
+}
+
+a.navbar-brand {
+    color: #fafafa;
+}
+
+.navbar {
+    --bs-navbar-color: #fafafa;
+    --bs-navbar-hover-color: #ff0000;
+    --bs-navbar-brand-hover-color: #ff0000;
+}
+
+.bg-dark {
+    background-color: #1c1c1c !important;
+}
+
+h2.text-center {
+    color: #fafafa;
+    margin: 1rem 0 1rem 0;
+}
+
+h3.text-center {
+    color: #fafafa;
+    margin: 1rem 0 1rem 0;
+}
+
+.search-styling {
+    margin-bottom: 1rem;
+}
+
+.form-styling {
+    display: flex;
+    justify-content: center;
+}
+
+.movie-text {
+    color: #fafafa;
+}
+
+
+
 .card-style {
     border-radius: 30px;
 }
