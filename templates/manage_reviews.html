@@ -8,7 +8,7 @@
     </div>
     <div class="row justify-content-center">
         {% for review in reviews %}
-        <div class="card mb-3 card-spacing" style="max-width: 540px;">
+        <div class="card mb-3 card-spacing card-styling" style="max-width: 540px;">
             <div class="row g-0">
                 <div class="col-md-4">
                     <img src="{{ review.image_url }}" class="img-fluid rounded-start" alt="{{ review.movie }}">
@@ -18,7 +18,7 @@
                         <h5 class="card-title">{{ review.movie }}</h5>
                         <p class="card-text">{{ review.review }}</p>
                         <p class="card-text">
-                            <small class="text-muted">
+                            <small class="">
                                 Posted by {{ review.user }} | {{ review.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
                             </small>
                         </p>

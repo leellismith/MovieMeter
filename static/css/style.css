@@ -26,10 +26,6 @@ h3.text-center {
     margin: 1rem 0 1rem 0;
 }
 
-.search-styling {
-    margin-bottom: 1rem;
-}
-
 .form-styling {
     display: flex;
     justify-content: center;
@@ -39,10 +35,27 @@ h3.text-center {
     color: #fafafa;
 }
 
+.card-styling {
+    border-style: solid;
+    border-color: #ffffff;
+    border-width: thin;
+    background-color: #06060696;
+    color: #fafafa;
+}
 
+.posted-by-styling {
+    position: absolute;
+    bottom: 1vh;
+}
 
-.card-style {
+.search-style {
     border-radius: 30px;
+    border-style: solid;
+    border-color: #fafafa;
+    margin: 0 auto;
+    display: block;
+    width: 85%;
+    margin-bottom: 1rem;
 }
 
 .flashes h4 {
@@ -63,7 +76,6 @@ img.img-fluid.rounded-start {
 }
 
 .autocomplete-suggestions {
-    border: 1px solid #dee2e6;
     max-height: 200px;
     overflow-y: auto;
     position: absolute;
