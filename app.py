@@ -22,11 +22,27 @@ app.secret_key = os.environ.get("SECRET_KEY")
 # Initialize PyMongo
 mongo = PyMongo(app)
 
+# Create text index on 'Title' field in 'movies' collection
+mongo.db.movies.create_index([("Title", "text")])
+
 # Routes
 @app.route("/")
 @app.route("/index")
 def index():
-    movies = mongo.db.movies.find()
+    movies = mongo.db.movies.find({
+        "Poster": {
+            "$exists": True,
+            "$nin": ["", "N/A"]
+        },
+        "Rated": {
+            "$exists": True,
+            "$nin": ["", "N/A"]
+        },
+        "Released": {
+            "$exists": True,
+            "$nin": ["", "N/A"]
+        }
+    }).sort("imdbRating", -1).limit(5)
     return render_template("index.html", movies=movies)
 
 
@@ -38,7 +54,7 @@ def search():
         return render_template("index.html")
 
     redirect_to = request.form.get("redirect_to", "index")
-    movies = search_movies(query)
+    movies = search_movies(query, exact_match=True)
 
     if not movies:
         movies = search_movies_in_api(query)
@@ -62,7 +78,7 @@ def search():
 @app.route("/autocomplete")
 def autocomplete():
     query = request.args.get("query")
-    movies = search_movies(query)    
+    movies = search_movies(query, exact_match=False)    
     return jsonify([movie["Title"] for movie in movies])
     
 
@@ -221,12 +237,13 @@ def delete_review(review_id):
 
 
 # Help Functions
-def search_movies(query):
-    movies = search_movies_in_db(query)
-    if not movies:
+def search_movies(query, exact_match=False):
+    if exact_match:
+        movies = search_movies_in_db(query)
+    else:
         movies = search_movies_in_api(query)
-        if movies:
-            save_movies_to_db(movies)
+    if movies:
+        save_movies_to_db(movies)
     return movies
 
 
@@ -273,7 +290,8 @@ def get_movie_details(imdb_id):
                 "Released": movie_data.get("Released"),
                 "Runtime": movie_data.get("Runtime"),
                 "Year": movie_data.get("Year"),
-                "imdbID": movie_data.get("imdbID")
+                "imdbID": movie_data.get("imdbID"),
+                "imdbRating": movie_data.get("imdbRating")
             }
     return None
 

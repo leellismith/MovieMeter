@@ -25,23 +25,37 @@
     </div>
 
 
-    {% if movies %}
-    <ul>
-        {% for movie in movies %}
-        <li class="align-items-center justify-content-center text-center movie-text">
-            <img src="{{ movie.Poster }}" alt="{{ movie.Title }} Poster" width="200">
-            <h3>{{ movie.Title }} ({{ movie.Year }})</h3>
-            <p>Actors: {{ movie.Actors }}</p>
-            <p>Director: {{ movie.Director }}</p>
-            <p>Genre: {{ movie.Genre }}</p>
-            <p>Rated: {{ movie.Rated }}</p>
-            <p>Released: {{ movie.Released }}</p>
-            <p>Runtime: {{ movie.Runtime }}</p>
-        </li>
-        {% endfor %}
-    </ul>
-    {% elif error %}
-    <p>{{ error }}</p>
-    {% endif %}
+    <div id="movieCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% if movies %}
+            {% for movie in movies %}
+            <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
+                <img src="{{ movie.Poster }}" class="d-block w-100" alt="{{ movie.Title }} Poster">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5>{{ movie.Title }} ({{ movie.Year }})</h5>
+                    <p>Actors: {{ movie.Actors }}</p>
+                    <p>Director: {{ movie.Director }}</p>
+                    <p>Genre: {{ movie.Genre }}</p>
+                    <p>Rated: {{ movie.Rated }}</p>
+                    <p>Released: {{ movie.Released }}</p>
+                    <p>Runtime: {{ movie.Runtime }}</p>
+                    <p>Rating: {{ movie.imdbRating }}</p>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>{{ error }}</p>
+            {% endif %}
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#movieCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#movieCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+      
 
 {% endblock %}
