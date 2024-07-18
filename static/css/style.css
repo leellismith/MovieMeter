@@ -12,6 +12,15 @@ a.navbar-brand {
     --bs-navbar-brand-hover-color: #ff0000;
 }
 
+.bg-light {
+    --bs-bg-opacity: 1;
+    background-color: #000000 !important;
+    --bs-body-color: #fafafa;
+    margin-right: .25rem;
+    height: 100%;
+    border-radius: 15px;
+}
+
 .bg-dark {
     background-color: #1c1c1c !important;
 }
@@ -35,6 +44,10 @@ h3.text-center {
     color: #fafafa;
 }
 
+.login-signup-button {
+    margin-top: 1rem;
+}
+
 .card-styling {
     border-style: solid;
     border-color: #ffffff;
@@ -56,6 +69,19 @@ h3.text-center {
     display: block;
     width: 85%;
     margin-bottom: 1rem;
+}
+
+.login-signup-styling {
+    background-color: #000000;
+    border-style: solid;
+    border-color: #fafafa;
+    text-align: center;
+    color: #fafafa;
+    border-radius: 2vw;
+}
+
+#username, #password {
+    border-radius: 25px;
 }
 
 .flashes h4 {
@@ -91,10 +117,16 @@ img.img-fluid.rounded-start {
     color: #495057;
     cursor: pointer;
 }
+
 .autocomplete-suggestion:hover {
     background-color: #e9ecef;
     color: #212529;
 }
+
+.carousel-item img {
+    width: 50% !important;
+    margin: 0 auto; /* Center the image horizontally */
+  }
 
 
 /*------------ Media*/
