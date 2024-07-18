@@ -41,3 +41,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    VANTA.WAVES({
+        el: 'html',  // Apply the effect to the entire body
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: window.innerHeight,
+        minWidth: window.innerWidth,
+        scale: 1,
+        scaleMobile: 1,
+        color: 0x000000,  // Background color in hexadecimal (black)
+        waveSpeed: 0.40
+    });
+});
