@@ -41,6 +41,10 @@ def index():
         "Released": {
             "$exists": True,
             "$nin": ["", "N/A"]
+        },
+        "imdbRating": {
+            "$exists": True,
+            "$nin": ["", "N/A"]
         }
     }).sort("imdbRating", -1).limit(5)
     return render_template("index.html", movies=movies)

@@ -17,7 +17,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();  // Parse response as JSON directly
             })
             .then(data => {
-                let suggestions = data.map(title => `<div class="autocomplete-suggestion">${title}</div>`).join('');
+                let suggestions = data.map(title => 
+                    `<div class="autocomplete-suggestion">${title}</div>`).join('');
                 autocompleteList.innerHTML = suggestions;
 
                 document.querySelectorAll('.autocomplete-suggestion').forEach(item => {

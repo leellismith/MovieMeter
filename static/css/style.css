@@ -51,6 +51,10 @@ h3.text-center {
     color: #fafafa;
 }
 
+.label-color{
+    color: #fafafa;
+}
+
 .login-signup-button {
     margin-top: 1rem;
 }
@@ -135,38 +139,38 @@ img.img-fluid.rounded-start {
     margin: 0 auto; /* Center the image horizontally */
   }
 
-.update-button {
+.save-update-button {
     --bs-btn-color: #000;
     --bs-btn-bg: #ffffff;
-    --bs-btn-border-color: #ffffff;
-    --bs-btn-hover-color: #00b506;
-    --bs-btn-hover-bg: #000000;
-    --bs-btn-hover-border-color: #16ca0a;
+    --bs-btn-border-color: #c7c7c7;
+    --bs-btn-hover-color: #000000;
+    --bs-btn-hover-bg: #c7c7c7;
+    --bs-btn-hover-border-color: #c7c7c7;
     --bs-btn-focus-shadow-rgb: 49, 132, 253;
     --bs-btn-active-color: #fff;
-    --bs-btn-active-bg: #0aca22;
-    --bs-btn-active-border-color: #0abe10;
+    --bs-btn-active-bg: #c7c7c7;
+    --bs-btn-active-border-color: #c7c7c7;
     --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
     --bs-btn-disabled-color: #fff;
-    --bs-btn-disabled-bg: #0dfd36;
-    --bs-btn-disabled-border-color: #3dfd0d;
+    --bs-btn-disabled-bg: #c7c7c7;
+    --bs-btn-disabled-border-color: #c7c7c7;
   }
 
 .delete-button {
-    --bs-btn-color: #fff;
+    --bs-btn-color: #fafafa;
     --bs-btn-bg: #ff0000;
     --bs-btn-border-color: #ff0000;
-    --bs-btn-hover-color: #ff0000;
-    --bs-btn-hover-bg: #000000;
-    --bs-btn-hover-border-color: #ff0000;
+    --bs-btn-hover-color: #fafafa;
+    --bs-btn-hover-bg: #cb0000;
+    --bs-btn-hover-border-color: #cb0000;
     --bs-btn-focus-shadow-rgb: 225, 83, 97;
     --bs-btn-active-color: #fff;
-    --bs-btn-active-bg: #ff0000;
-    --bs-btn-active-border-color: #ff0000;
+    --bs-btn-active-bg: #cb0000;
+    --bs-btn-active-border-color: #cb0000;
     --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
     --bs-btn-disabled-color: #fff;
-    --bs-btn-disabled-bg: #ff0000;
-    --bs-btn-disabled-border-color: #ff0000;
+    --bs-btn-disabled-bg: #cb0000;
+    --bs-btn-disabled-border-color: #cb0000;
 }
 
 .info-footer {
@@ -180,6 +184,42 @@ img.img-fluid.rounded-start {
     font-size: 1.2rem;
     width: 100%;
 }
+
+input#query\ review-search-button {
+    flex: 1;
+    border-radius: 10px;
+}
+
+.search-style-bg {
+    background-color: #06060696;
+}
+
+.review-style-bg {
+    background-color: #06060600;
+}
+
+.review-card{
+    margin-bottom: 1rem;
+}
+
+.search-button {
+    --bs-btn-color: #fafafa;
+    --bs-btn-bg: #00000080;
+    --bs-btn-border-color: #ffffff;
+    --bs-btn-hover-color: #fafafa;
+    --bs-btn-hover-bg: #272727;
+    --bs-btn-hover-border-color: #ffffff;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #fafafa;
+    --bs-btn-active-border-color: #fafafa;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #fafafa;
+    --bs-btn-disabled-border-color: #fafafa;
+}
+
+
 
 
 /*------------ Media*/
