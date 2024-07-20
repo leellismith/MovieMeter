@@ -8,12 +8,14 @@
             <div class="container text-center position-relative">
                 <div class="row justify-content-center">
                     <div class="col-md-8">
+                        <!-- Form to search for a film -->
                         <form method="POST" action="/search" class="form-styling">
                             <div class="col-12 position-relative review-card">
                                 <label for="query" class="form-label label-color">Search for a film to review:</label>
                                 <div class="input-group d-flex">
                                     <input class="form-control" list="datalistOptions" id="query" name="query"
-                                        placeholder="Type to search..." type="text" required autocomplete="off">
+                                        placeholder="Type to search..." type="text" required autocomplete="off" 
+                                        value="{{ movie_title }}">
                                     <input type="hidden" name="redirect_to" value="add_review">
                                     <button type="submit" class="btn search-button ms-2">
                                         <i class="fas fa-search"></i> Search
@@ -22,6 +24,7 @@
                                 <div id="autocomplete-list" class="autocomplete-suggestions"></div>
                             </div>
                         </form>
+                        <!-- Display movie details if available -->
                         {% if movie_title %}
                         <div class="card review-style-bg p-3 mb-3">
                             <div class="card-body">
@@ -33,12 +36,13 @@
                                     <input type="hidden" id="poster_url" name="poster_url" value="{{ poster_url }}">
                                 </div>
                                 {% endif %}
+                                 <!-- Form to submit a review -->
                                 <form method="POST" action="/add_review">
                                     <input type="hidden" id="query" name="query" value="{{ movie_title }}">
                                     <input type="hidden" id="poster_url" name="poster_url" value="{{ poster_url }}">
                                     <div class="form-floating mb-3">
                                         <textarea class="form-control" placeholder="Leave a review here" id="review"
-                                            name="review" style="height: 150px" maxlength="200" required></textarea>
+                                            name="review" style="height: 150px" maxlength="200" required>{{ review_text }}</textarea>
                                         <label for="review">Review</label>
                                     </div>
                                     <button type="submit" class="btn save-update-button">Save Review</button>

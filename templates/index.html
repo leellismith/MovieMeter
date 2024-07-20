@@ -29,7 +29,7 @@
         <div class="carousel-inner">
             {% if movies %}
             {% for movie in movies %}
-            <div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
+            <div class="carousel-item {% if loop.index == 1 %}active{% endif %}" data-movie-id="{{ movie.id }}">
                 <img src="{{ movie.Poster }}" class="d-block w-100" alt="{{ movie.Title }} Poster">
                 <div class="carousel-caption d-none d-md-block">
                     <h5>{{ movie.Title }} ({{ movie.Year }})</h5>

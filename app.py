@@ -147,6 +147,11 @@ def add_review():
     review_text = ""
     poster_url = ""
 
+    # Handle GET request
+    if request.method == "GET":
+        movie_title = request.args.get("movieTitle", "")
+        poster_url = request.args.get("posterUrl", "")
+
     if request.method == "POST":
         movie_title = request.form.get("query")
         review_text = request.form.get("review")

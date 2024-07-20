@@ -57,3 +57,17 @@ document.addEventListener('DOMContentLoaded', function() {
         waveSpeed: 0.40
     });
 });
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    const carouselItems = document.querySelectorAll('.carousel-item');
+
+    carouselItems.forEach(item => {
+        item.addEventListener('click', function () {
+            const movieId = this.getAttribute('data-movie-id');
+            const movieTitle = this.querySelector('h5').innerText;
+            const posterUrl = this.querySelector('img').src;
+            // Redirect to the add_review page with the selected movie details
+            window.location.href = `/add_review?movieId=${movieId}&movieTitle=${encodeURIComponent(movieTitle)}&posterUrl=${encodeURIComponent(posterUrl)}`;
+        });
+    });
+});

@@ -32,14 +32,13 @@ a.navbar-brand {
     background-color: #1c1c1c !important;
 }
 
-h2.text-center {
+h2.text-center, h3.text-center {
     color: #fafafa;
     margin: 1rem 0 1rem 0;
 }
 
-h3.text-center {
+h5.card-title {
     color: #fafafa;
-    margin: 1rem 0 1rem 0;
 }
 
 .form-styling {
@@ -135,7 +134,7 @@ img.img-fluid.rounded-start {
 }
 
 .carousel-item img {
-    width: 50% !important;
+    width: 30% !important;
     margin: 0 auto; /* Center the image horizontally */
   }
 
@@ -219,7 +218,13 @@ input#query\ review-search-button {
     --bs-btn-disabled-border-color: #fafafa;
 }
 
-
+.carousel-caption {
+    position: static;
+    border-style: solid;
+    border-left: none;
+    border-right: none;
+    border-top: none;
+}
 
 
 /*------------ Media*/
