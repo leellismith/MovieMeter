@@ -6,7 +6,6 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    overflow: hidden;
 }
 
 a.navbar-brand {
@@ -174,7 +173,7 @@ img.img-fluid.rounded-start {
 
 .info-footer {
     display: flex;
-    position: fixed;
+    position: static;
     left: 0;
     bottom: 0;
     justify-content: center;
@@ -182,6 +181,7 @@ img.img-fluid.rounded-start {
     align-items: center;
     font-size: 1.2rem;
     width: 100%;
+    color: white;
 }
 
 input#query\ review-search-button {
@@ -220,10 +220,14 @@ input#query\ review-search-button {
 
 .carousel-caption {
     position: static;
+}
+
+div#movieCarousel {
+    border-bottom: white;
     border-style: solid;
     border-left: none;
-    border-right: none;
     border-top: none;
+    border-right: none;
 }
 
 
