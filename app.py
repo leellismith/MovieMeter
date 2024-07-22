@@ -25,6 +25,7 @@ mongo = PyMongo(app)
 # Create text index on 'Title' field in 'movies' collection
 mongo.db.movies.create_index([("Title", "text")])
 
+
 # Routes
 @app.route("/")
 @app.route("/index")
@@ -64,27 +65,28 @@ def search():
         movies = search_movies_in_api(query)
         if movies:
             save_movies_to_db(movies)
-    
+
     if not movies:
         if redirect_to == "add_review":
             flash(f"No movies found for '{query}'.")
             return render_template("add_review.html", movie_title=query)
-        return render_template("index.html", error=f"No movies found for '{query}'.")
-        
+        return render_template(
+            "index.html", error=f"No movies found for '{query}'.")
+
     if redirect_to == "add_review":
         poster_url = movies[0].get("Poster") if movies else None
         return render_template(
             "add_review.html", movie_title=query, poster_url=poster_url)
-    
+
     return render_template("index.html", movies=movies)
 
 
 @app.route("/autocomplete")
 def autocomplete():
     query = request.args.get("query")
-    movies = search_movies(query, exact_match=False)    
+    movies = search_movies(query, exact_match=False)
     return jsonify([movie["Title"] for movie in movies])
-    
+
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -115,7 +117,8 @@ def login():
         # Checks database to see if user exists
         existing_user = mongo.db.users.find_one(
             {"username": request.form.get("username").lower()})
-        if existing_user and check_password_hash(existing_user["password"], request.form.get("password")):
+        if existing_user and check_password_hash(
+                existing_user["password"], request.form.get("password")):
             session["user"] = request.form.get("username").lower()
             flash(f"Welcome, {request.form.get('username')}")
             return redirect(url_for("profile", username=session["user"]))
@@ -160,13 +163,13 @@ def add_review():
         if not movie_title or not review_text:
             flash("Movie title and review text are required.")
             return render_template(
-                "add_review.html", movie_title=movie_title, 
+                "add_review.html", movie_title=movie_title,
                 review_text=review_text, poster_url=poster_url)
 
         if len(review_text) > 200:
             flash("A review must be 200 characters or less.")
             return render_template(
-                "add_review.html", movie_title=movie_title, 
+                "add_review.html", movie_title=movie_title,
                 review_text=review_text, poster_url=poster_url)
 
         movie_details = get_movie_details(movie_title)
@@ -179,7 +182,7 @@ def add_review():
         if not movie_details:
             flash(f"Movie '{movie_title}' not found.")
             return render_template(
-                "add_review.html", movie_title=movie_title, 
+                "add_review.html", movie_title=movie_title,
                 review_text=review_text, poster_url=poster_url)
 
         review = {
@@ -229,7 +232,9 @@ def edit_review(review_id):
 
         mongo.db.reviews.update_one(
             {"_id": ObjectId(review_id)},
-            {"$set": {"review": edit_review, "timestamp": datetime.datetime.utcnow()}}
+            {"$set": {
+                "review": edit_review, "timestamp":
+                    datetime.datetime.utcnow()}}
         )
         flash("You have updated your review.")
         return redirect(url_for("manage_reviews"))
@@ -242,7 +247,6 @@ def delete_review(review_id):
     mongo.db.reviews.delete_one({"_id": ObjectId(review_id)})
     flash("Your review has been deleted!")
     return redirect(url_for("manage_reviews"))
-
 
 
 # Help Functions

@@ -45,14 +45,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function() {
     VANTA.WAVES({
-        el: 'html',  // Apply the bg effect to the entire body
+        el: '#vanta-bg',  // Apply the bg effect to the canvas
         mouseControls: true,
         touchControls: true,
         gyroControls: false,
-        minHeight: window.innerHeight,
-        minWidth: window.innerWidth,
-        scale: 1,
-        scaleMobile: 1,
+        scale: 1.00,
+        scaleMobile: 1.00,
         color: 0x000000,  // Background color in hexadecimal (black)
         waveSpeed: 0.40
     });
