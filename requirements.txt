@@ -6,4 +6,5 @@ Flask-Login==0.6.3
 Flask-PyMongo==2.3.0
 itsdangerous==2.2.0
 pymongo==4.7.3
+requests==2.32.3
 Werkzeug==3.0.3
