@@ -79,6 +79,7 @@ h5.card-title {
     border-width: thin;
     background-color: #06060696;
     color: #fafafa;
+    max-width: 540px
 }
 
 .posted-by-styling {
@@ -278,4 +279,17 @@ div#movieCarousel {
     .review-card {
         margin-bottom: 0;
     }
+
+    .info-footer {
+        position: relative;
+        bottom: 0;
+    }
+
+    img.img-fluid.rounded-start {
+        width: 50vw;
+    }
+    .image-center{
+        text-align: center;
+    }
+    
 }
