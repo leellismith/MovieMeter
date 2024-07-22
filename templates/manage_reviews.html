@@ -23,7 +23,7 @@
                             </small>
                         </p>
                         <a class="btn save-update-button" href="{{ url_for('edit_review', review_id=review._id) }}">Update Review</a>
-                        <a class="btn delete-button" href="{{ url_for('delete_review', review_id=review._id) }}">Delete Review</a>
+                        <a class="btn delete-button" href="{{ url_for('delete_review', review_id=review._id) }}" onclick="return confirmDelete()">Delete Review</a>
                     </div>
                 </div>
             </div>
@@ -34,14 +34,17 @@
 
     <!-- Edit a specific review -->
     {% if review %}
-    <div class="mt-4">
-        <h2>Edit Review</h2>
+    <div class="mt-4 edit-review-border">
+        <h2 class="edit-review">Edit Review</h2>
         <form method="POST" action="{{ url_for('edit_review', review_id=review._id) }}">
             <div class="mb-3">
-                <label for="review" class="form-label">Review Text</label>
+                <label for="review" class="form-label edit-review">{{ review.movie }}</label>
                 <textarea class="form-control" id="review" name="review" rows="3">{{ review.review }}</textarea>
             </div>
-            <button type="submit" class="btn btn-success">Update Review</button>
+            <div class="botton-position">
+                <button type="submit" class="btn save-update-button">Update Review</button>
+                <a href="{{ url_for('manage_reviews') }}" class="btn delete-button">Cancel Update</a>
+            </div>
         </form>
     </div>
     {% endif %}

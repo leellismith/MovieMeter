@@ -5,23 +5,25 @@
 
     <div class="card search-style search-style-bg">
         <div class="card-body review-card">
-            <div class="container text-center position-relative">
+            <div class="container text-center">
                 <div class="row justify-content-center">
                     <div class="col-md-8">
                         <!-- Form to search for a film -->
                         <form method="POST" action="/search" class="form-styling">
-                            <div class="col-12 position-relative review-card">
+                            <div class="col-12 col-md-8 review-card form-group">
                                 <label for="query" class="form-label label-color">Search for a film to review:</label>
                                 <div class="input-group d-flex">
                                     <input class="form-control" list="datalistOptions" id="query" name="query"
                                         placeholder="Type to search..." type="text" required autocomplete="off" 
                                         value="{{ movie_title }}">
+                                    <div id="autocomplete-list" class="autocomplete-suggestions"></div>
                                     <input type="hidden" name="redirect_to" value="add_review">
-                                    <button type="submit" class="btn search-button ms-2">
-                                        <i class="fas fa-search"></i> Search
-                                    </button>
+                                    <div class="col-12 col-md-4">
+                                        <button type="submit" class="btn search-button">
+                                            <i class="fas fa-search"></i> Search
+                                        </button>
+                                    </div>
                                 </div>
-                                <div id="autocomplete-list" class="autocomplete-suggestions"></div>
                             </div>
                         </form>
                         <!-- Display movie details if available -->
@@ -46,6 +48,7 @@
                                         <label for="review">Review</label>
                                     </div>
                                     <button type="submit" class="btn save-update-button">Save Review</button>
+                                    <a href="{{ url_for('add_review') }}" class="btn delete-button">Cancel Review</a>
                                 </form>
                             </div>
                         </div>

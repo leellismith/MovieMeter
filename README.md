@@ -7,7 +7,7 @@
 ![Am I Responsive Image]()
 
 
-## <p align='center'>[MovieMeter Live Site]()
+## <p align='center'>[MovieMeter Live Site](https://moviemeter-e678ab17db18.herokuapp.com/)
 
 ## <p align='center'>[MovieMeter Repository](https://github.com/leellismith/MovieMeter)
 
@@ -75,6 +75,7 @@ The website is designed to give information about the films they want to review 
 * __JavaScript__
 * __Hover.css__
 * __FlexBox__
+* __Bootstrap__
 * __Font Awesome__
 * __Google Fonts__
 * __Git__
@@ -182,4 +183,3 @@ ___
 
  # Credits
 
- 

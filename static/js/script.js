@@ -70,3 +70,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         });
     });
 });
+
+function confirmDelete() {
+    return confirm("Are you sure you want to delete this review?");
+}
