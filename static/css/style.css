@@ -72,6 +72,10 @@ h5.card-title {
     justify-content: center;
 }
 
+.login-signup-color {
+    color: #fafafa;
+}
+
 .movie-text {
     color: #fafafa;
 }
@@ -110,7 +114,7 @@ h5.card-title {
 }
 
 .login-signup-styling {
-    background-color: #000000;
+    background-color: #06060696;
     border-style: solid;
     border-color: #fafafa;
     text-align: center;
