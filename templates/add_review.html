@@ -10,7 +10,7 @@
                     <div class="col-md-8">
                         <!-- Form to search for a film -->
                         <form method="POST" action="/search" class="form-styling">
-                            <div class="col-12 col-md-10 review-card form-group">
+                            <div class="col-12 col-md-10 form-group">
                                 <label for="query" class="form-label label-color">Search for a film to review:</label>
                                 <div class="input-group d-flex">
                                     <input class="form-control" list="datalistOptions" id="query" name="query"
@@ -18,7 +18,7 @@
                                         value="{{ movie_title }}">
                                     <div id="autocomplete-list" class="autocomplete-suggestions"></div>
                                     <input type="hidden" name="redirect_to" value="add_review">
-                                    <div class="col-12 col-md-4">
+                                    <div class="col-12 add-review-search">
                                         <button type="submit" class="btn search-button">
                                             <i class="fas fa-search"></i> Search
                                         </button>

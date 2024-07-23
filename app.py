@@ -30,24 +30,33 @@ mongo.db.movies.create_index([("Title", "text")])
 @app.route("/")
 @app.route("/index")
 def index():
-    movies = mongo.db.movies.find({
-        "Poster": {
-            "$exists": True,
-            "$nin": ["", "N/A"]
+    pipeline = [
+        {
+            "$match": {
+                "Poster": {
+                    "$exists": True,
+                    "$nin": ["", "N/A"]
+                },
+                "Rated": {
+                    "$exists": True,
+                    "$nin": ["", "N/A", "Not Rated", "TV-MA"]
+                },
+                "Released": {
+                    "$exists": True,
+                    "$nin": ["", "N/A"]
+                },
+                "imdbRating": {
+                    "$exists": True,
+                    "$nin": ["", "N/A"]
+                }
+            }
         },
-        "Rated": {
-            "$exists": True,
-            "$nin": ["", "N/A"]
-        },
-        "Released": {
-            "$exists": True,
-            "$nin": ["", "N/A"]
-        },
-        "imdbRating": {
-            "$exists": True,
-            "$nin": ["", "N/A"]
+        {
+            "$sample": {"size": 8}
         }
-    }).sort("imdbRating", -1).limit(5)
+    ]
+
+    movies = list(mongo.db.movies.aggregate(pipeline))
     return render_template("index.html", movies=movies)
 
 

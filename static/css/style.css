@@ -142,17 +142,21 @@ img.img-fluid.rounded-start {
 .autocomplete-suggestions {
     max-height: 200px;
     overflow-y: auto;
-    position: absolute;
-    background-color: #f8f9fa;
+    position: relative;
+    background-color: #06060696;
     z-index: 1000;
     width: 100%;
-    top: 100%;
-    left: 0;
+    overflow: hidden;
+    border-style: solid;
+    border-color: #fafafa !important;
+    border-top: none;
+    border-bottom: none;
+    border-radius: 0 0 15px 15px !important;
 }
 
 .autocomplete-suggestion {
     padding: 8px;
-    color: #495057;
+    color: #fafafa;
     cursor: pointer;
 }
 
@@ -293,6 +297,10 @@ div#movieCarousel {
     margin-bottom: 5vh !important;
 }
 
+.add-review-search {
+    margin-top: 0.5rem;
+}
+
 
 /*------------ Media*/
 
@@ -300,6 +308,10 @@ div#movieCarousel {
     .navbar-expand-lg .offcanvas .offcanvas-body {
         justify-content: flex-end;
     }
+    .autocomplete-suggestions{
+        overflow: hidden;
+    }
+    
     
 }
 
@@ -323,6 +335,15 @@ div#movieCarousel {
     .image-center{
         text-align: center;
     }
+    .autocomplete-suggestions{
+        position: relative;
+        border-style: solid;
+        border-color: #fafafa !important;
+        border-top: none;
+        border-bottom: none;
+        border-radius: 0 0 15px 15px !important;
+    }
+    
 
 }
 
