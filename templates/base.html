@@ -33,7 +33,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasNavbar"
-                    aria-labelledby="offcanvasNavbarLabel">
+                    aria-labelledby="offcanvasDarkNavbarLabel">
                     <div class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Menu</h5>
                         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
@@ -76,7 +76,7 @@
         </nav>
     </header>
 
-    <section>
+    <div>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
@@ -88,7 +88,7 @@
                 {% endfor %}
             {% endif %}
         {% endwith %}
-    </section>
+    </div>
     
     <main class="container">
         {% block content %}
