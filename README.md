@@ -85,6 +85,7 @@ The website is designed to give information about the films they want to review 
 * __Figma__
 * __vantajs__
 * __jsdelivr__
+* __favicon__
 
 # Testing
 

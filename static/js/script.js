@@ -57,14 +57,17 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 document.addEventListener('DOMContentLoaded', (event) => {
-    const carouselItems = document.querySelectorAll('.carousel-item');
+    const reviewButtons = document.querySelectorAll('.review-button');
 
-    carouselItems.forEach(item => {
-        item.addEventListener('click', function () {
-            const movieId = this.getAttribute('data-movie-id');
-            const movieTitleWithYear = this.querySelector('h5').innerText;
+    reviewButtons.forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.stopPropagation();  // Prevent carousel item click event
+            const carouselItem = this.closest('.carousel-item');
+            const movieId = carouselItem.getAttribute('data-movie-id');
+            const movieTitleWithYear = carouselItem.querySelector('.carousel-caption h5').innerText;
             const movieTitle = movieTitleWithYear.split('(')[0].trim();
-            const posterUrl = this.querySelector('img').src;
+            const posterUrl = carouselItem.querySelector('img').src;
+
             // Redirect to the add_review page with the selected movie details
             window.location.href = `/add_review?movieId=${movieId}&movieTitle=${encodeURIComponent(movieTitle)}&posterUrl=${encodeURIComponent(posterUrl)}`;
         });

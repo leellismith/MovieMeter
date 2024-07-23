@@ -2,6 +2,10 @@ body {
     background-color: #000000;
 }
 
+.uppercase {
+    text-transform: uppercase;
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -30,8 +34,15 @@ a.navbar-brand {
 
 .navbar {
     --bs-navbar-color: #fafafa;
-    --bs-navbar-hover-color: #ff0000;
-    --bs-navbar-brand-hover-color: #ff0000;
+    --bs-navbar-hover-color: #c7c7c7;
+    --bs-navbar-brand-hover-color: #c7c7c7;
+    background-color: #06060696;
+    border-bottom: #fafafa;
+    border-style: solid;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-width: thin;
 }
 
 .bg-light {
@@ -95,6 +106,7 @@ h5.card-title {
     display: block;
     width: 85%;
     margin-bottom: 1rem;
+    background-color: #06060696;
 }
 
 .login-signup-styling {
@@ -260,6 +272,26 @@ div#movieCarousel {
     padding: 1rem;
     border-radius: 25px;
 }
+.profile-cards {
+    margin-bottom: .5rem;
+}
+
+.profile-card-styling {
+    border-style: solid;
+    border-color: #fafafa;
+    border-width: thin;
+    background-color: #06060696 !important;
+    color: #fafafa !important;
+}
+
+.card-profile-sizing {
+    width: 80%;
+}
+
+.name-spacing{
+    margin-top: 5vh !important;
+    margin-bottom: 5vh !important;
+}
 
 
 /*------------ Media*/
@@ -291,5 +323,11 @@ div#movieCarousel {
     .image-center{
         text-align: center;
     }
-    
+
+}
+
+@media only screen and (max-width: 455px) {
+    a.btn.delete-button {
+        margin-top: 0.5rem;
+    }
 }
