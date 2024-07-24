@@ -4,7 +4,7 @@
 
 <h2 align="center">Milestone Project 3 - Lee Smith</h2>
 
-![Am I Responsive Image](readme-docs/wireframes/MM%20-%20amiresponsive.PNG)
+![Am I Responsive Image](readme-docs/testing/MM%20-%20amiresponsive.PNG)
 
 
 ## <p align='center'>[MovieMeter Live Site](https://moviemeter-e678ab17db18.herokuapp.com/)
@@ -46,6 +46,30 @@ The site also give the user full CRUD functionality by Creating, Reading, Updati
 
 # Features
 
+* __Background Image__
+    > The animated background was selected to give the website a look of excitment.
+
+* __Search Bar__
+    > On the home screen you will locate a search bar which you will be able to search for a film and find information about the film. The search will find either find the film in mongodb or will search for in the API and then store it in the mongodb database.
+
+* __Carousel__
+    > Also on the home screen you will film a carousel which will on refreshing the page will randomise the 8 films shown in the carousel.
+
+* __Reviews page__
+    > The reviews page shows all reviews made by users who have an account.
+
+* __Profile Page__
+    > After the user logs in, they will be sent to an easy access profile page, that has links to Reviews, Manage reviews and make review.
+
+* __Add Review Page__
+    > Only a user that is logged in is able to see this page. All the user needs to do is search the film and then the film title and film poster is shown with a text box giving the user 200 characters to review the film. Below the text field are two boxes for submit review and cancel review.
+
+* __Manage Revie Page__
+    > Only a user that is logged in is able to see this page. The manage reviews page is like the reviews page but will only show the reviews the user has made. These reviews have two buttons in them. The first box is an update box which give the user the option to change what their review says and save the update to the database. The second box is a delete box which will delete the review from the database.
+
+
+
+
 ## Future Features
 
 * Like and dislike feature.
@@ -56,19 +80,32 @@ The site also give the user full CRUD functionality by Creating, Reading, Updati
 
 # Typography and Color Scheme
 
+The Colour Scheme will include of HEX colours -
+
+* `#FAFAFA` - White
+* `#000000` - Background cover incase failed animated background.
+* `#c7c7c7` - Grey hover color
+* `#06060696` - Black with opacity
+* `#ff0000` - Red for the Cancel or delete buttons
+
+These colours work well together and will make the website clear and visually appealing.
+
 # Wireframes
 
 ## Mobile Wireframe
 
-![Mobile Wireframe]()
+![Mobile Wireframe](readme-docs/wireframes/Wireframe%20-%201-2%20mobile.PNG)
+![Mobile Wireframe](readme-docs/wireframes/Wireframe%20-%202-2%20mobile.PNG)
 
 ## Tablet Wireframe
 
-![Mobile Wireframe]()
+![Tablet Wireframe](readme-docs/wireframes/Wireframe%20-%201-2%20tablet.PNG)
+![Tablet Wireframe](readme-docs/wireframes/Wireframe%20-%202-2%20tablet.PNG)
 
 ## Desktop Wireframe
 
-![Mobile Wireframe]()
+![Desktop Wireframe](readme-docs/wireframes/Wireframe%20-%201-2%20desktop.PNG)
+![Desktop Wireframe](readme-docs/wireframes/Wireframe%20-%202-2%20desktop.PNG)
 
 # Technology
 * __HTML__
@@ -97,49 +134,49 @@ The site also give the user full CRUD functionality by Creating, Reading, Updati
 
 #### __Home Page__
 
-![Site Validation](readme-docs/wireframes/MM%20-%20HTML%20Validator.PNG)
+![Site Validation](readme-docs/testing/MM%20-%20HTML%20Validator.PNG)
 
 #### __CSS Validation__
 
-![CSS Validation](readme-docs/wireframes/MM%20-%20CSS%20Validator.PNG)
+![CSS Validation](readme-docs/testing/MM%20-%20CSS%20Validator.PNG)
 
 ## __Lighthouse Testing__
 
 #### __Home Page__
 
-![Home Page Validation](readme-docs/wireframes/MM%20-%20Home%20Page%20-%20Lighthouse.PNG)
+![Home Page Validation](readme-docs/testing/MM%20-%20Home%20Page%20-%20Lighthouse.PNG)
 
 #### __Reviews Page__
 
-![Reviews Validation](readme-docs/wireframes/MM%20-%20Reviews%20-%20Lighthouse.PNG)
+![Reviews Validation](readme-docs/testing/MM%20-%20Reviews%20-%20Lighthouse.PNG)
 
 #### __Login Page__
 
-![Login Validation](readme-docs/wireframes/MM%20-%20Login%20Page%20-%20Lighthouse.PNG)
+![Login Validation](readme-docs/testing/MM%20-%20Login%20Page%20-%20Lighthouse.PNG)
 
 #### __Sign Up Page__
 
-![Sign Up Validation](readme-docs/wireframes/MM%20-%20Register%20Page%20-%20Lighthouse.PNG)
+![Sign Up Validation](readme-docs/testing/MM%20-%20Register%20Page%20-%20Lighthouse.PNG)
 
 #### __Add Review Page__
 
-![Add Review Validation](readme-docs/wireframes/MM%20-%20Add%20Review%20-%20Lighthouse.PNG)
+![Add Review Validation](readme-docs/testing/MM%20-%20Add%20Review%20-%20Lighthouse.PNG)
 
 #### __Manage Reviews Page__
 
-![Manage Reviews Validation](readme-docs/wireframes/MM%20-%20Manage%20Reviews%20-%20Lighthouse.PNG)
+![Manage Reviews Validation](readme-docs/testing/MM%20-%20Manage%20Reviews%20-%20Lighthouse.PNG)
 
 #### __Profile Page__
 
-![Profile Validation](readme-docs/wireframes/MM%20-%20Profile%20-%20Lighthouse.PNG)
+![Profile Validation](readme-docs/testing/MM%20-%20Profile%20-%20Lighthouse.PNG)
 
 ## __Jshint Testing__
 
-![Javascript Site Validation](readme-docs/wireframes/MM%20-%20Jshint.PNG)
+![Javascript Site Validation](readme-docs/testing/MM%20-%20Jshint.PNG)
 
 ## __CI Python Linter Testing__
 
-![CI Python Linter Validation](readme-docs/wireframes/MM%20-%20CI%20Python%20Linter.PNG)
+![CI Python Linter Validation](readme-docs/testing/MM%20-%20CI%20Python%20Linter.PNG)
 
 # Test Cases
 
@@ -213,7 +250,7 @@ The site also give the user full CRUD functionality by Creating, Reading, Updati
 
 | Users | Results | Fixed Issues |
 |--- |--- |--- |
-| First User | Found issue where they where able to make a review from the main page if they clicked of the carousel | Fixed by removing the function to click on the corousel and added a button which only shows for logged in users. |
+| First User | Found issue where they where able to make a review from the main page if they clicked on the carousel without being logged in. | Fixed by removing the function to click on the corousel and added a button which only shows for logged in users. |
 | Second User | No Issues Found | N/A |
 | Third User | No Issues Found | N/A |
 | Fourth User | No Issues Found | N/A |
@@ -270,6 +307,58 @@ To get your own MongoDB Database URI. Follow these steps.
 >14. Copy the connection string, and replace `<password>` with your own password.
 
 
+## Heroku Deployment
+[Heroku](https://dashboard.heroku.com/) was used for The MovieMeter project. Heroku is a cloud platform that allows developers to build, run, and operate applications entirely in the cloud.
+
+To deploy your own, follow these steps -
+
+>1. Select __New__ in the top-right corner of your Heroku Dashboard, and select __Create new app__ from the dropdown menu.
+>2. Your app name must be unique, and then choose a region closest to you (EU or USA), and finally, select __Create App__.
+>3. From the new app __Settings__, click __Reveal Config Vars__, and set your environment variables.
+
+| Key | Value |
+| --- | --- |
+| `DATABASE_URL` | user's own value |
+| `IP` | 0.0.0.0 |
+| `MONGO_DBNAME` | user's own value |
+| `MONGO_URI` | user's own value |
+| `PORT` | 5000 |
+| `SECRET_KEY` | user's own value |
+
+>4. Heroku needs two additional files in order to deploy properly.
+- requirements.txt
+- Procfile
+
+>5. You can install this project's __requirements__ (where applicable) using:
+
+- `pip3 install -r requirements.txt`
+
+>6. If you have your own packages that have been installed, then the requirements file needs updated using:
+
+- `pip3 freeze --local > requirements.txt`
+
+>7. The **Procfile** can be created with the following command:
+
+- `echo web: python app.py > Procfile`
+- *replace __app.py__ with the name of your primary Flask app name; the one at the root-level*
+
+NOTE: The Procfile uses a capital P and doesn't have a file extension on the end.
+
+>8. For Heroku deployment, follow these steps to connect your own GitHub repository to the newly created app:
+
+Either:
+
+- Select __Automatic Deployment__ from the Heroku app.
+
+>9. Or:
+
+- In the Terminal/CLI, connect to Heroku using this command: `heroku login -i`
+- Set the remote for Heroku: `heroku git:remote -a app_name` (replace *app_name* with your app name)
+- After performing the standard Git `add`, `commit`, and `push` to GitHub, you can now type:
+	- `git push heroku main`
+
+The project should now be connected and deployed to Heroku!
+
 ## Gitpod.io Deployment
 
 >1. Go to github.
@@ -293,3 +382,18 @@ ___
 
  # Credits
 
+ API was used from [omdbapi.com](https://www.omdbapi.com/)
+
+[Bootstrap](https://getbootstrap.com/) was used throughout my site.
+
+Animated 3D background taken from [Vanta JS](https://www.vantajs.com/).
+
+Followed through the [mini project](https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+NRDB_L5+2/courseware/9e2f12f5584e48acb3c29e9b0d7cc4fe/054c3813e82e4195b5a4d8cd8a99ebaa/) to make sure I had the correct CRUD functionality.
+
+### Acknowledgements
+
+* Amy Richardson - Cohort Facilitator: For providing great resources to help with everyone's projects through weekly stand ups and even checking in if I missed a meeting.
+
+* I would like to thank my family, for their support and understanding, for believing in me, and allowing me to make this transition into software development.
+
+* A special thanks to my two friends who both work in software development, whose advice during this project was invaluable.
