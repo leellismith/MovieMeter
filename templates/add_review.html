@@ -33,8 +33,7 @@
                                 <h5 class="card-title">{{ movie_title }}</h5>
                                 {% if poster_url %}
                                 <div class="text-center mb-3">
-                                    <img src="{{ poster_url }}" alt="Film Poster" class="img-fluid"
-                                        style="max-width: 200px;">
+                                    <img src="{{ poster_url }}" alt="Film Poster" class="img-fluid review-image">
                                     <input type="hidden" id="poster_url" name="poster_url" value="{{ poster_url }}">
                                 </div>
                                 {% endif %}
@@ -48,7 +47,7 @@
                                         <label for="review">Review</label>
                                     </div>
                                     <button type="submit" class="btn save-update-button">Save Review</button>
-                                    <a href="{{ url_for('add_review') }}" class="btn delete-button">Cancel Review</a>
+                                    <a href="{{ url_for('add_review') }}" class="btn delete-button cancel-button">Cancel Review</a>
                                 </form>
                             </div>
                         </div>

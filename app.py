@@ -181,8 +181,7 @@ def add_review():
                 "add_review.html", movie_title=movie_title,
                 review_text=review_text, poster_url=poster_url)
 
-        movie_details = get_movie_details(movie_title)
-
+        movie_details = search_movies_in_api(movie_title)
         if not movie_details:
             movie_details = search_movies_in_api(movie_title)
             if movie_details:
@@ -194,6 +193,7 @@ def add_review():
                 "add_review.html", movie_title=movie_title,
                 review_text=review_text, poster_url=poster_url)
 
+        # Saves review to the database
         review = {
             "movie": movie_title,
             "review": review_text,

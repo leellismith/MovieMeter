@@ -251,7 +251,7 @@ These colours work well together and will make the website clear and visually ap
 | Users | Results | Fixed Issues |
 |--- |--- |--- |
 | First User | Found issue where they where able to make a review from the main page if they clicked on the carousel without being logged in. | Fixed by removing the function to click on the corousel and added a button which only shows for logged in users. |
-| Second User | No Issues Found | N/A |
+| Second User | Issue found in Adding a review where it only affects one film - Fight Club | Bug fixed by changing movie_details = get_movie_details at line 184 to movie_details = search_movies_in_api(movie_title) |
 | Third User | No Issues Found | N/A |
 | Fourth User | No Issues Found | N/A |
 | Fifth User | No Issues Found | N/A |

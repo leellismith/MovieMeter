@@ -215,6 +215,10 @@ img.img-fluid.rounded-start {
     --bs-btn-disabled-border-color: #cb0000;
 }
 
+.manange-review-button {
+    margin: 0.15rem;
+}
+
 .botton-position {
     display: flex;
     justify-content: center;
@@ -246,6 +250,10 @@ input#query\ review-search-button {
 
 .review-card{
     margin-bottom: 1rem;
+}
+
+.review-image {
+    max-width: 200px;
 }
 
 .search-button {
@@ -351,7 +359,7 @@ div#movieCarousel {
 }
 
 @media only screen and (max-width: 466px) {
-    a.btn.delete-button {
+    .cancel-button {
         margin-top: 0.5rem;
     }
 }
