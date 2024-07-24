@@ -350,7 +350,7 @@ div#movieCarousel {
 
 }
 
-@media only screen and (max-width: 359px) {
+@media only screen and (max-width: 466px) {
     a.btn.delete-button {
         margin-top: 0.5rem;
     }
