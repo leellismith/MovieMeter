@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-    
+    <!-- Profile Card -->
     <div class="card profile-card-styling card-profile-sizing name-spacing mx-auto m-2">
         <div class="card-body">
             <div class="container text-center">
@@ -9,6 +9,7 @@
                     <div class="col">
                     </div>
                     <div class="col-6 profile-cards uppercase">
+                        <!-- Display Username -->
                         <h2>{{ username }}'s Profile</h2>
                     </div>
                     <div class="col">
@@ -18,13 +19,14 @@
         </div>
     </div>
 
-
+    <!-- Manage Reviews Card -->
     <div class="card profile-card-styling card-profile-sizing mx-auto m-2">
         <div class="card-body">
             <div class="container text-center">
                 <div class="row">
                     <div class="col">
                     </div>
+                    <!-- Manage Reviews Prompt -->
                     <div class="col-6 profile-cards uppercase">
                         Want to manage your review?
                     </div>
@@ -35,6 +37,7 @@
                     <div class="col">
                     </div>
                     <div class="col-6">
+                        <!-- Manage Reviews Button -->
                         <a href="{{ url_for('manage_reviews')}}" class="btn save-update-button">Manage Reviews</a>
                     </div>
                     <div class="col">
@@ -44,12 +47,14 @@
         </div>
     </div>
 
+    <!-- Add Review Card -->
     <div class="card profile-card-styling card-profile-sizing mx-auto m-2">
         <div class="card-body">
             <div class="container text-center">
                 <div class="row">
                     <div class="col">
                     </div>
+                    <!-- Add Reviews Prompt -->
                     <div class="col-6 profile-cards uppercase">
                         Want to make a review?
                     </div>
@@ -60,6 +65,7 @@
                     <div class="col">
                     </div>
                     <div class="col-6">
+                        <!-- Add Review Button -->
                         <a href="{{ url_for('add_review')}}" class="btn save-update-button">Add Review</a>
                     </div>
                     <div class="col">
@@ -69,12 +75,14 @@
         </div>
     </div>
 
+    <!-- See Reviews Card -->
     <div class="card profile-card-styling card-profile-sizing mx-auto m-2">
         <div class="card-body">
             <div class="container text-center">
                 <div class="row">
                     <div class="col">
                     </div>
+                    <!-- See Reviews Prompt -->
                     <div class="col-6 profile-cards uppercase">
                         Check all reviews out!
                     </div>
@@ -85,6 +93,7 @@
                     <div class="col">
                     </div>
                     <div class="col-6">
+                        <!-- See Reviews Button -->
                         <a href="{{ url_for('reviews')}}" class="btn save-update-button">See Reviews</a>
                     </div>
                     <div class="col">

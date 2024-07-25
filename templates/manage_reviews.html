@@ -4,17 +4,21 @@
 
 <div class="container">
     <div class="row justify-content-center">
+        <!-- Section Title -->
         <h2 class="text-center">Manage Your Reviews</h2>
     </div>
     <div class="row justify-content-center">
         {% for review in reviews %}
+        <!-- Review Card -->
         <div class="card mb-3 card-spacing card-styling">
             <div class="row g-0">
                 <div class="col-md-4 image-center">
+                    <!-- Review Image -->
                     <img src="{{ review.image_url }}" class="img-fluid rounded-start" alt="{{ review.movie }}">
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
+                        <!-- Review Details -->
                         <h5 class="card-title">{{ review.movie }}</h5>
                         <p class="card-text">{{ review.review }}</p>
                         <p class="card-text">
@@ -22,6 +26,7 @@
                                 Posted by {{ review.user }} | {{ review.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
                             </small>
                         </p>
+                        <!-- Update and Delete Buttons -->
                         <a class="btn save-update-button manange-review-button" href="{{ url_for('edit_review', review_id=review._id) }}">Update Review</a>
                         <a class="btn delete-button manange-review-button" href="{{ url_for('delete_review', review_id=review._id) }}" onclick="return confirmDelete()">Delete Review</a>
                     </div>
@@ -36,12 +41,14 @@
     {% if review %}
     <div class="mt-4 edit-review-border">
         <h2 class="edit-review">Edit Review</h2>
+        <!-- Edit Review Form -->
         <form method="POST" action="{{ url_for('edit_review', review_id=review._id) }}">
             <div class="mb-3">
                 <label for="review" class="form-label edit-review">{{ review.movie }}</label>
                 <textarea class="form-control" id="review" name="review" rows="3">{{ review.review }}</textarea>
             </div>
             <div class="botton-position">
+                <!-- Update and Cancel Buttons -->
                 <button type="submit" class="btn save-update-button">Update Review</button>
                 <a href="{{ url_for('manage_reviews') }}" class="btn delete-button">Cancel Update</a>
             </div>

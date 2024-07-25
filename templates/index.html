@@ -1,20 +1,24 @@
 {% extends "base.html" %}
 {% block content %}
 
-
+    <!-- Search Section -->
     <h3 class="text-center">Search MovieMeter</h3>
 
     <div class="row card card-body card-style search-style">
+        <!-- Search Form -->
         <form action="{{ url_for('search') }}" method="post" class="col-12">
             <div class="row align-items-center justify-content-center text-center">
                 <div class="form-group col-12 col-md-8">
                     <div class="input-group">
+                        <!-- Search Input Field -->
                         <input type="text" name="query" id="query" minlength="2" class="form-control" required
                             placeholder="Search" autocomplete="off">
+                        <!-- Autocomplete Suggestions List -->
                         <div id="autocomplete-list" class="autocomplete-suggestions"></div>
                     </div>
                 </div>
                 <div class="col-12 col-md-4">
+                    <!-- Search Button -->
                     <button type="submit" class="btn search-button text-shadow">
                         <i class="fas fa-search"></i> Search
                     </button>
@@ -23,13 +27,16 @@
         </form>
     </div>
 
-
+    <!-- Movie Carousel Section -->
     <div id="movieCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             {% if movies %}
             {% for movie in movies %}
+            <!-- Carousel Item -->
             <div class="carousel-item {% if loop.index == 1 %}active{% endif %}" data-movie-id="{{ movie.id }}">
+                <!-- Movie Poster -->
                 <img src="{{ movie.Poster }}" class="d-block w-100" alt="{{ movie.Title }} Poster">
+                <!-- Carousel Caption with Movie Details -->
                 <div class="carousel-caption">
                     <h5>{{ movie.Title }} ({{ movie.Year }})</h5>
                     <p>Actors: {{ movie.Actors }}</p>
@@ -40,15 +47,18 @@
                     <p>Runtime: {{ movie.Runtime }}</p>
                     <p>Rating: {{ movie.imdbRating }}</p>
                     {% if session.user %}
+                        <!-- Review Button for logged in users -->
                         <button class="btn save-update-button review-button" data-movie-id="{{ movie.id }}">Review</button>
                     {% endif %}
                 </div>
             </div>
             {% endfor %}
             {% else %}
+            <!-- Error Message -->
             <p>{{ error }}</p>
             {% endif %}
         </div>
+        <!-- left and right Carousel Controls -->
         <button class="carousel-control-prev" type="button" data-bs-target="#movieCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
