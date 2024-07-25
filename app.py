@@ -30,6 +30,10 @@ mongo.db.movies.create_index([("Title", "text")])
 @app.route("/")
 @app.route("/index")
 def index():
+    """
+    Renders the index page with a sample of movies
+    that have valid Poster, Rated, Released, and imdbRating fields.
+    """
     pipeline = [
         {
             "$match": {
@@ -62,6 +66,11 @@ def index():
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
+    """
+    Searches for movies based on user query.
+    If movies are not found in the local database,
+    searches the external API and saves results to the database.
+    """
     query = request.form.get("query")
     if not query:
         flash(f"No search provided.")
@@ -92,6 +101,9 @@ def search():
 
 @app.route("/autocomplete")
 def autocomplete():
+    """
+    Provides autocomplete suggestions for movie titles based on user query.
+    """
     query = request.args.get("query")
     movies = search_movies(query, exact_match=False)
     return jsonify([movie["Title"] for movie in movies])
@@ -99,6 +111,9 @@ def autocomplete():
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
+    """
+    Handles user registration.
+    """
     if request.method == "POST":
         # checks mongodb to see if username exists
         existing_user = mongo.db.users.find_one(
@@ -122,6 +137,9 @@ def signup():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    """
+    Handles user login.
+    """
     if request.method == "POST":
         # Checks database to see if user exists
         existing_user = mongo.db.users.find_one(
@@ -137,6 +155,9 @@ def login():
 
 @app.route("/profile/<username>")
 def profile(username):
+    """
+    Displays the user's profile page if logged in.
+    """
     if "user" in session:
         user = mongo.db.users.find_one({"username": session["user"]})
         if user and user["username"] == username:
@@ -148,6 +169,9 @@ def profile(username):
 
 @app.route("/logout")
 def logout():
+    """
+    Logs the user out and redirects to the login page.
+    """
     flash("You have been logged out")
     session.pop("user", None)
     return redirect(url_for("login"))
@@ -155,6 +179,9 @@ def logout():
 
 @app.route("/add_review", methods=["GET", "POST"])
 def add_review():
+    """
+    Handles adding new movie reviews.
+    """
     movie_title = ""
     review_text = ""
     poster_url = ""
@@ -213,12 +240,18 @@ def add_review():
 
 @app.route("/reviews")
 def reviews():
+    """
+    Handles displaying all movie reviews
+    """
     reviews = list(mongo.db.reviews.find())
     return render_template("reviews.html", reviews=reviews)
 
 
 @app.route("/manage_reviews", methods=["GET"])
 def manage_reviews():
+    """
+    Displays reviews for the logged-in user to manage.
+    """
     user = session.get("user")
     reviews = list(mongo.db.reviews.find({"user": user}))
     return render_template("manage_reviews.html", reviews=reviews)
@@ -226,6 +259,9 @@ def manage_reviews():
 
 @app.route("/manage_reviews/<review_id>", methods=["GET", "POST"])
 def edit_review(review_id):
+    """
+    Handles the editing of an existing review.
+    """
     review = mongo.db.reviews.find_one({"_id": ObjectId(review_id)})
 
     if request.method == "POST":
@@ -253,6 +289,9 @@ def edit_review(review_id):
 
 @app.route("/delete_review/<review_id>")
 def delete_review(review_id):
+    """
+    Deletes a review by its ID.
+    """
     mongo.db.reviews.delete_one({"_id": ObjectId(review_id)})
     flash("Your review has been deleted!")
     return redirect(url_for("manage_reviews"))
@@ -260,6 +299,10 @@ def delete_review(review_id):
 
 # Help Functions
 def search_movies(query, exact_match=False):
+    """
+    Searches for movies in the local database and, if not found,
+    searches the external API and saves results to the database.
+    """
     if exact_match:
         movies = search_movies_in_db(query)
     else:
@@ -270,6 +313,9 @@ def search_movies(query, exact_match=False):
 
 
 def search_movies_in_db(query):
+    """
+    Searches for movies in the local database by exact match or text search.
+    """
     exact_match = mongo.db.movies.find_one({"Title": query})
     if exact_match:
         return [exact_match]
@@ -278,6 +324,9 @@ def search_movies_in_db(query):
 
 
 def search_movies_in_api(query):
+    """
+    Searches for movies using the external OMDB API.
+    """
     api_url = os.environ.get(
         "OMDBAPI_HOST") + "apikey=" + os.environ.get(
             "OMDBAPI_KEY") + "&s=" + query + "&type=movie"
@@ -295,6 +344,9 @@ def search_movies_in_api(query):
 
 
 def get_movie_details(imdb_id):
+    """
+    Retrieves detailed information about a movie by its IMDB ID using the OMDB API.
+    """
     api_url = os.environ.get(
         "OMDBAPI_HOST") + "apikey=" + os.environ.get(
             "OMDBAPI_KEY") + "&i=" + imdb_id
@@ -319,6 +371,9 @@ def get_movie_details(imdb_id):
 
 
 def save_movies_to_db(movies):
+    """
+    Saves movie information to the local database if it doesn't already exist.
+    """
     for movie in movies:
         if not mongo.db.movies.find_one({"imdbID": movie.get("imdbID")}):
             mongo.db.movies.insert_one(movie)
