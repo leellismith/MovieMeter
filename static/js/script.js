@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 autocompleteList.innerHTML = '';
                 return;
             }
-
+            // Fetch autocomplete suggestions from the server
             fetch(`/autocomplete?query=${encodeURIComponent(query)}`)
                 .then(response => {
                     if (!response.ok) {
@@ -19,10 +19,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     return response.json();
                 })
                 .then(data => {
+                    // Populate autocomplete list with suggestions
                     let suggestions = data.map(title => 
                         `<div class="autocomplete-suggestion">${title}</div>`).join('');
                     autocompleteList.innerHTML = suggestions;
 
+                    // Add click event listener to each suggestion
                     document.querySelectorAll('.autocomplete-suggestion').forEach(item => {
                         item.addEventListener('click', function () {
                             queryInput.value = this.innerText;
@@ -36,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         });
 
+        // Close autocomplete list when clicking outside of it
         document.addEventListener('click', function(e) {
             if (!e.target.classList.contains('autocomplete-suggestion') && e.target.id !== 'query') {
                 autocompleteList.innerHTML = '';
@@ -68,11 +71,16 @@ document.addEventListener('DOMContentLoaded', function () {
             const movieTitle = movieTitleWithYear.split('(')[0].trim();
             const posterUrl = carouselItem.querySelector('img').src;
 
+            // Redirect to the add review page with movie details as query parameters
             window.location.href = `/add_review?movieId=${movieId}&movieTitle=${encodeURIComponent(movieTitle)}&posterUrl=${encodeURIComponent(posterUrl)}`;
         });
     });
 });
 
+/**
+ * Asks for confirmation before deleting a review.
+ * @returns {boolean} - True if the user confirms, false otherwise.
+ */
 function confirmDelete() {
     return confirm("Are you sure you want to delete this review?"); // jshint ignore:line
 }
