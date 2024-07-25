@@ -317,6 +317,10 @@ div#movieCarousel {
     margin-top: 0.5rem;
 }
 
+.error-search {
+    color: #fafafa;
+}
+
 
 /*------------ Media*/
 
@@ -354,7 +358,6 @@ div#movieCarousel {
         border-bottom: none;
         border-radius: 0 0 15px 15px !important;
     }
-    
 
 }
 

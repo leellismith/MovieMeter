@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .catch(error => {
                     console.error('Error fetching autocomplete suggestions:', error);
-                    autocompleteList.innerHTML = '<div class="autocomplete-error">Unable to find the movie</div>';
+                    autocompleteList.innerHTML = '<div class="autocomplete-error error-search">Unable to find the movie</div>';
                 });
         });
 
