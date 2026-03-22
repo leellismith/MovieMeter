@@ -35,7 +35,10 @@
             <!-- Carousel Item -->
             <div class="carousel-item {% if loop.index == 1 %}active{% endif %}" data-movie-id="{{ movie.id }}">
                 <!-- Movie Poster -->
-                <img src="{{ movie.Poster }}" class="d-block w-100" alt="{{ movie.Title }} Poster">
+                <img src="{{ movie.Poster }}"
+                     class="d-block w-100"
+                     alt="{{ movie.Title }} Poster">
+
                 <!-- Carousel Caption with Movie Details -->
                 <div class="carousel-caption">
                     <h5>{{ movie.Title }} ({{ movie.Year }})</h5>

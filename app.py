@@ -1,6 +1,8 @@
 import os
 import requests
 import datetime
+import re
+import urllib.parse
 from flask import (
     Flask, flash, render_template,
     redirect, request, jsonify, session, url_for
@@ -31,33 +33,38 @@ mongo.db.movies.create_index([("Title", "text")])
 @app.route("/index")
 def index():
     """
-    Renders the index page with a sample of movies
-    that have valid Poster, Rated, Released, and imdbRating fields.
+    Renders the index page with a curated sample of movies.
     """
     pipeline = [
         {
             "$match": {
-                "Poster": {
-                    "$exists": True,
-                    "$nin": ["", "N/A"]
-                },
-                "Rated": {
-                    "$exists": True,
-                    "$nin": ["", "N/A", "Not Rated", "TV-MA"]
-                },
-                "Released": {
-                    "$exists": True,
-                    "$nin": ["", "N/A"]
-                },
-                "imdbRating": {
-                    "$exists": True,
-                    "$nin": ["", "N/A"]
+                "Poster": {"$regex": "^https://", "$options": "i"},
+                "Director": {"$nin": ["", " ", "N/A"]},
+                "Genre": {"$nin": ["", " ", "N/A", "Documentary"]},
+                "Rated": {"$nin": ["", " ", "N/A", "Not Rated", "NOT RATED"]},
+                "Released": {"$exists": True, "$nin": ["", " ", "N/A"]},
+                "imdbRating": {"$exists": True, "$gte": "7.0"}
+            }
+        },
+        {
+            "$addFields": {
+                "RuntimeMinutes": {
+                    "$toInt": {
+                        "$substr": [
+                            "$Runtime",
+                            0,
+                            { "$indexOfBytes": ["$Runtime", " "] }
+                        ]
+                    }
                 }
             }
         },
         {
-            "$sample": {"size": 8}
-        }
+            "$match": {
+                "RuntimeMinutes": {"$gt": 70}
+            }
+        },
+        {"$sample": {"size": 8}}
     ]
 
     movies = list(mongo.db.movies.aggregate(pipeline))
@@ -73,28 +80,28 @@ def search():
     """
     query = request.form.get("query")
     if not query:
-        flash(f"No search provided.")
+        flash("No search provided.")
         return render_template("index.html")
 
     redirect_to = request.form.get("redirect_to", "index")
-    movies = search_movies(query, exact_match=True)
 
-    if not movies:
-        movies = search_movies_in_api(query)
-        if movies:
-            save_movies_to_db(movies)
+    # Use the unified search pipeline (DB → API → save → return)
+    movies = search_movies(query)
 
     if not movies:
         if redirect_to == "add_review":
             flash(f"No movies found for '{query}'.")
             return render_template("add_review.html", movie_title=query)
-        return render_template(
-            "index.html", error=f"No movies found for '{query}'.")
+
+        return render_template("index.html", error=f"No movies found for '{query}'.")
 
     if redirect_to == "add_review":
-        poster_url = movies[0].get("Poster") if movies else None
+        poster_url = movies[0].get("Poster")
         return render_template(
-            "add_review.html", movie_title=query, poster_url=poster_url)
+            "add_review.html",
+            movie_title=query,
+            poster_url=poster_url
+        )
 
     return render_template("index.html", movies=movies)
 
@@ -105,8 +112,9 @@ def autocomplete():
     Provides autocomplete suggestions for movie titles based on user query.
     """
     query = request.args.get("query")
-    movies = search_movies(query, exact_match=False)
+    movies = search_movies(query)
     return jsonify([movie["Title"] for movie in movies])
+
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -298,49 +306,147 @@ def delete_review(review_id):
 
 
 # Help Functions
-def search_movies(query, exact_match=False):
+def search_movies(query):
     """
-    Searches for movies in the local database and, if not found,
-    searches the external API and saves results to the database.
+    Searches the local database first. If no valid movies are found,
+    searches the external API, validates results, saves them to the DB,
+    and returns only clean movies.
     """
-    if exact_match:
-        movies = search_movies_in_db(query)
-    else:
-        movies = search_movies_in_api(query)
-    if movies:
-        save_movies_to_db(movies)
-    return movies
+    # 1. Search DB
+    db_results = search_movies_in_db(query)
+
+    if db_results:
+        return db_results
+
+    # 2. Fallback to API
+    api_results = search_movies_in_api(query)
+
+    # 3. Save valid API results to DB
+    for movie in api_results:
+        movie["NormalizedTitle"] = normalize(movie["Title"])
+        mongo.db.movies.insert_one(movie)
+
+
+    return api_results
+
+NUMBER_MAP = {
+    "1": "one",
+    "2": "two",
+    "3": "three",
+    "4": "four",
+    "5": "five",
+    "6": "six",
+    "7": "seven",
+    "8": "eight",
+    "9": "nine",
+}
+
+def normalize(text):
+    if not text:
+        return ""
+
+    text = text.lower()
+    text = re.sub(r"[^a-z0-9 ]", " ", text)  # remove punctuation
+    words = text.split()
+
+    normalized_words = []
+    for w in words:
+        if w in NUMBER_MAP:
+            normalized_words.append(NUMBER_MAP[w])
+        else:
+            normalized_words.append(w)
+
+    return " ".join(normalized_words)
 
 
 def search_movies_in_db(query):
-    """
-    Searches for movies in the local database by exact match or text search.
-    """
-    exact_match = mongo.db.movies.find_one({"Title": query})
-    if exact_match:
-        return [exact_match]
-    # Fallback to text search
-    return list(mongo.db.movies.find({"$text": {"$search": query}}))
+    nq = normalize(query)
+
+    # Split query into words for stricter matching
+    words = nq.split()
+
+    # Build AND conditions for each word
+    and_conditions = [
+        {"NormalizedTitle": {"$regex": word, "$options": "i"}}
+        for word in words
+    ]
+
+    # Find movies where ALL words appear in the title
+    matches = mongo.db.movies.find({"$and": and_conditions})
+
+    results = [m for m in matches if is_valid_movie(m)]
+
+    return results
+
 
 
 def search_movies_in_api(query):
     """
-    Searches for movies using the external OMDB API.
+    Searches OMDb for movies, fetches full details, validates them,
+    and returns only clean, display-ready movies.
     """
-    api_url = os.environ.get(
-        "OMDBAPI_HOST") + "apikey=" + os.environ.get(
-            "OMDBAPI_KEY") + "&s=" + query + "&type=movie"
+    encoded_query = urllib.parse.quote(query)
+
+    api_url = (
+        os.environ.get("OMDBAPI_HOST")
+        + "apikey=" + os.environ.get("OMDBAPI_KEY")
+        + "&s=" + encoded_query
+        + "&type=movie"
+    )
+
     response = requests.get(api_url)
-    if response.status_code == 200:
-        search_results = response.json()
-        if 'Search' in search_results:
-            movies = []
-            for movie in search_results['Search']:
-                movie_details = get_movie_details(movie['imdbID'])
-                if movie_details:
-                    movies.append(movie_details)
-            return movies
-    return None
+    if response.status_code != 200:
+        return []
+
+    data = response.json()
+    if not data or data.get("Response") == "False":
+        return []
+
+    results = data.get("Search", [])
+    valid_movies = []
+
+    for item in results:
+        imdb_id = item.get("imdbID")
+        if not imdb_id:
+            continue
+
+        details = get_movie_details(imdb_id)
+        if not details:
+            continue
+
+        # Clean poster
+        details["Poster"] = clean_poster(details.get("Poster"))
+
+        # Validate movie
+        if is_valid_movie(details):
+            valid_movies.append(details)
+
+    return valid_movies
+
+
+def clean_poster(url):
+    if not url or url in ["N/A", "", " "]:
+        return None
+    if not url.startswith("https://"):
+        return None
+    return url
+
+def is_valid_movie(movie):
+    if not movie:
+        return False
+
+    bad_values = ["", " ", "N/A", "Not Rated", "NOT RATED"]
+
+    required_fields = ["Title", "Year", "imdbID", "Released", "imdbRating", "Rated"]
+    for field in required_fields:
+        if movie.get(field) in bad_values or movie.get(field) is None:
+            return False
+
+    poster = movie.get("Poster")
+    if not poster or not poster.startswith("https://"):
+        return False
+
+    return True
 
 
 def get_movie_details(imdb_id):
@@ -376,12 +482,13 @@ def save_movies_to_db(movies):
     """
     for movie in movies:
         if not mongo.db.movies.find_one({"imdbID": movie.get("imdbID")}):
+            movie["NormalizedTitle"] = normalize(movie["Title"])
             mongo.db.movies.insert_one(movie)
 
 
 if __name__ == "__main__":
     app.run(
-        host=os.environ.get("IP"),
-        port=int(os.environ.get("PORT")),
+        host=os.environ.get("IP", "0.0.0.0"),
+        port=int(os.environ.get("PORT", 5000)),
         debug=False
     )

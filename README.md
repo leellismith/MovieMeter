@@ -11,6 +11,32 @@
 
 ## <p align='center'>[MovieMeter Repository](https://github.com/leellismith/MovieMeter)
 
+# Backend Upgrade — MongoDB Atlas Integration (2026 Update)
+
+MovieMeter now uses a cloud‑hosted MongoDB Atlas database, replacing the previous local MongoDB setup.
+This upgrade improves reliability, performance, and deployment stability on Heroku.
+
+### What’s New -
+- MongoDB Atlas cluster for all movie, review, and user data
+- Updated Flask connection string using secure Atlas credentials
+- New movie‑loading pipeline (scripts/load_movies.py)
+- 500+ curated movies loaded from TMDB + OMDb
+- Improved search performance using MongoDB text indexes
+- Cleaner, validated movie data (no broken posters or missing ratings)
+✔ How the Loader Works
+The loader script:
+- Fetches top‑rated movies from TMDB
+- Enriches each movie with OMDb details
+- Filters out movies with missing posters or IMDb rating < 7
+- Inserts clean movies into the moviemeter.movies collection
+- Avoids duplicates
+- Runs safely against the Atlas cluster
+
+To run manually type:
+
+`python scripts/load_movies.py`
+
+
 # UXD
 
 # Purpose of the Project
